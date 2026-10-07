@@ -1,0 +1,1 @@
+-- seed.sql: demo admin/student users, subjects, categories, sample notes, ratings, Q&A

@@ -1,0 +1,79 @@
+/* ============================================================
+   theme.css  -  OWNER: UI lead only
+   Design tokens + Bootstrap overrides. Change colors HERE and
+   the whole site changes. Never hardcode a hex color anywhere
+   else in the project.
+   Load order: bootstrap -> theme.css -> layout.css -> components.css -> pages/*.css
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --sc-primary: #4f46e5;
+  --sc-primary-hover: #4338ca;
+  --sc-primary-soft: #eef2ff;
+  --sc-accent: #f59e0b;
+
+  /* Surfaces and text */
+  --sc-bg: #f8fafc;
+  --sc-surface: #ffffff;
+  --sc-border: #e2e8f0;
+  --sc-text: #0f172a;
+  --sc-text-muted: #64748b;
+
+  /* Status */
+  --sc-success: #16a34a;
+  --sc-warning: #d97706;
+  --sc-danger: #dc2626;
+
+  /* Shape and spacing */
+  --sc-radius: 0.75rem;
+  --sc-radius-sm: 0.5rem;
+  --sc-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+  --sc-shadow-hover: 0 4px 16px rgba(15, 23, 42, 0.12);
+
+  /* Map our tokens onto Bootstrap 5.3 variables */
+  --bs-primary: var(--sc-primary);
+  --bs-primary-rgb: 79, 70, 229;
+  --bs-body-bg: var(--sc-bg);
+  --bs-body-color: var(--sc-text);
+  --bs-border-color: var(--sc-border);
+  --bs-link-color: var(--sc-primary);
+  --bs-link-hover-color: var(--sc-primary-hover);
+  --bs-border-radius: var(--sc-radius-sm);
+  --bs-font-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+[data-bs-theme="dark"] {
+  --sc-primary-soft: #1e1b4b;
+  --sc-bg: #0b1120;
+  --sc-surface: #111827;
+  --sc-border: #1f2937;
+  --sc-text: #e5e7eb;
+  --sc-text-muted: #94a3b8;
+  --sc-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --bs-body-bg: var(--sc-bg);
+  --bs-body-color: var(--sc-text);
+  --bs-border-color: var(--sc-border);
+}
+
+/* Bootstrap buttons recolored through Bootstrap's own variables */
+.btn-primary {
+  --bs-btn-bg: var(--sc-primary);
+  --bs-btn-border-color: var(--sc-primary);
+  --bs-btn-hover-bg: var(--sc-primary-hover);
+  --bs-btn-hover-border-color: var(--sc-primary-hover);
+  --bs-btn-active-bg: var(--sc-primary-hover);
+  --bs-btn-active-border-color: var(--sc-primary-hover);
+  --bs-btn-disabled-bg: var(--sc-primary);
+  --bs-btn-disabled-border-color: var(--sc-primary);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--sc-primary);
+  --bs-btn-border-color: var(--sc-primary);
+  --bs-btn-hover-bg: var(--sc-primary);
+  --bs-btn-hover-border-color: var(--sc-primary);
+  --bs-btn-active-bg: var(--sc-primary-hover);
+  --bs-btn-active-border-color: var(--sc-primary-hover);
+}
+
+body { background: var(--sc-bg); }

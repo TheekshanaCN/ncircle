@@ -1,0 +1,19 @@
+# Secrets
+.env
+
+# Uploaded files and logs (keep folder placeholders only)
+storage/uploads/resources/*
+storage/uploads/avatars/*
+storage/logs/*
+!storage/uploads/resources/.gitkeep
+!storage/uploads/avatars/.gitkeep
+!storage/logs/.gitkeep
+
+# Dependencies and OS/editor junk
+vendor/
+node_modules/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log

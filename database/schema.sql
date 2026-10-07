@@ -1,0 +1,1 @@
+-- schema.sql: all CREATE TABLE statements (agreed by the team before backend work starts)
