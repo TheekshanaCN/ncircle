@@ -1,59 +1,422 @@
 /* ============================================================
    components.css  -  OWNER: UI lead (others: request via PR)
-   Reusable pieces. Every class starts with  sc-  so it never
-   clashes with Bootstrap. Each component here has a matching
-   PHP file in views/components/ and an entry on /dev/styleguide.
-   Style with tokens (var(--sc-*)), never raw colors.
    ============================================================ */
 
-/* Card */
-.sc-card {
-  background: var(--sc-surface);
-  border: 1px solid var(--sc-border);
-  border-radius: var(--sc-radius);
-  box-shadow: var(--sc-shadow);
-  padding: 1.25rem;
+/* ---------- Eyebrow label (lime pill above section titles) ---------- */
+.sc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--sc-radius-pill);
+    background: var(--sc-lime-light);
+    box-shadow: var(--sc-shadow-btn);
+    font-family: var(--sc-font-heading);
+    font-weight: 700;
+    font-size: var(--sc-fs-xs);
+    line-height: 1rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sc-teal);
 }
-.sc-card--hover { transition: box-shadow .2s ease, transform .2s ease; }
-.sc-card--hover:hover { box-shadow: var(--sc-shadow-hover); transform: translateY(-2px); }
+
+/* ---------- Section heading block: eyebrow + H2 + subtitle ----------
+   <div class="sc-section-head">
+     <span class="sc-eyebrow">Academic structure</span>
+     <h2 class="sc-section-head__title">Tailored to the NSBM degree pathway</h2>
+     <p class="sc-section-head__sub">...</p>
+   </div>
+   Add .sc-section-head--start for the left-aligned version. */
+.sc-section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 672px;
+    margin: 0 auto 4rem;
+    text-align: center;
+}
+.sc-section-head__title {
+    margin: 0.125rem 0 0;
+    font-size: var(--sc-fs-h2);
+    line-height: 1.11;
+}
+.sc-section-head__sub {
+    margin: 0.5rem 0 0;
+    font-size: var(--sc-fs-body);
+    line-height: 1.5;
+    color: var(--sc-text-muted);
+}
+.sc-section-head--start {
+    align-items: flex-start;
+    max-width: none;
+    margin: 0;
+    text-align: left;
+}
+
+/* ---------- Card ---------- */
+.sc-card {
+    background: var(--sc-surface);
+    border: 1px solid var(--sc-border);
+    border-radius: var(--sc-radius-card);
+    box-shadow: var(--sc-shadow-card);
+    padding: 1.5rem;
+}
+.sc-card--outlined {
+    border: 2px solid var(--sc-teal-border);
+}
+.sc-card--lift {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.sc-card--lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(29, 57, 52, 0.12);
+}
+
+/* ---------- Icon circle ---------- */
+.sc-icon-circle {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--sc-lime-soft);
+    color: var(--sc-teal);
+    font-size: 1.25rem;
+}
+.sc-icon-circle--teal {
+    background: rgba(29, 57, 52, 0.1);
+}
+.sc-icon-circle--lg {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    background: rgba(29, 57, 52, 0.1);
+}
+
+/* ---------- Tag chit (+12.5%, Active, ...) ---------- */
+.sc-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--sc-radius-pill);
+    background: var(--sc-lime);
+    color: var(--sc-black);
+    font-family: var(--sc-font-body);
+    font-weight: 700;
+    font-size: var(--sc-fs-xs);
+    line-height: 1rem;
+    white-space: nowrap;
+}
+.sc-tag--sm {
+    padding: 0.125rem 0.5rem;
+}
+.sc-tag--down {
+    background: var(--sc-danger-soft);
+    color: var(--sc-danger);
+}
+.sc-tag--outline {
+    background: transparent;
+    border: 1px solid var(--sc-border);
+    color: var(--sc-text-muted);
+}
+
+/* Live status dot */
+.sc-dot {
+    display: inline-block;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--sc-lime);
+    box-shadow: 0 0 0 3px var(--sc-lime-soft);
+}
+
+/* ---------- Stat card internals (use with .sc-card .sc-card--outlined) ----------
+   <article class="sc-card sc-card--outlined sc-stat">
+     <div class="sc-stat__top"> icon circle + tag </div>
+     <p class="sc-stat__value">2,481</p>
+     <p class="sc-stat__label">Notes shared</p>
+     <div class="sc-stat__foot"><span>..</span><strong>..</strong></div>
+   </article> */
+.sc-stat {
+    display: flex;
+    flex-direction: column;
+}
+.sc-stat__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.sc-stat__value {
+    margin: 0.75rem 0 0;
+    font-family: var(--sc-font-heading);
+    font-weight: 700;
+    font-size: var(--sc-fs-stat);
+    line-height: 1.11;
+    letter-spacing: -0.025em;
+    color: var(--sc-teal);
+}
+.sc-stat__label {
+    margin: 0.25rem 0 0.75rem;
+    font-weight: 500;
+    font-size: var(--sc-fs-sm);
+    line-height: 1.25rem;
+    color: var(--sc-text-muted);
+}
+.sc-stat__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.8125rem;
+    border-top: 1px solid var(--sc-border);
+    font-size: var(--sc-fs-xs);
+    line-height: 1rem;
+    color: var(--sc-text-muted);
+}
+.sc-stat__foot strong {
+    font-weight: 600;
+    color: var(--sc-teal);
+}
+
+/* ---------- Avatar stack ---------- */
+.sc-avatars {
+    display: flex;
+}
+.sc-avatars > * {
+    margin-right: -0.5rem;
+}
+.sc-avatars > :last-child {
+    margin-right: 0;
+}
+.sc-avatar {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 2px solid var(--sc-avatar-ring, var(--sc-teal));
+    border-radius: 50%;
+    background: var(--sc-offwhite);
+    color: var(--sc-teal);
+    font-weight: 700;
+    font-size: var(--sc-fs-xs);
+    line-height: 1;
+}
+.sc-avatar--lime {
+    background: var(--sc-lime);
+    color: var(--sc-black);
+}
+.sc-avatar--lime-light {
+    background: var(--sc-lime-light);
+    color: var(--sc-black);
+}
+.sc-avatar--white {
+    background: var(--sc-white);
+}
+.sc-avatar--count {
+    font-size: 0.625rem;
+}
+
+/* ---------- Year badge (Y1 .. Y4) ---------- */
+.sc-year {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    background: var(--sc-teal);
+    color: var(--sc-white);
+    font-family: var(--sc-font-mono);
+    font-weight: 700;
+    font-size: 0.625rem;
+    line-height: 0.9375rem;
+}
+.sc-year--active {
+    background: var(--sc-lime);
+    color: var(--sc-black);
+}
+.sc-year--muted {
+    padding: 0.1875rem 0.5625rem;
+    background: var(--sc-white);
+    border: 1px solid var(--sc-border);
+    color: var(--sc-text-muted);
+}
+
+/* ---------- Text link with arrow ---------- */
+.sc-link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--sc-font-heading);
+    font-weight: 700;
+    font-size: var(--sc-fs-xs);
+    line-height: 1rem;
+    color: var(--sc-teal);
+    text-decoration: none;
+}
+.sc-link-arrow::after {
+    content: "\2192";
+    transition: transform 0.2s ease;
+}
+.sc-link-arrow:hover::after {
+    transform: translateX(4px);
+}
+
+/* ---------- Feature card (illustration, title, text, link) ----------
+   <article class="sc-card sc-feature">
+     <div> <div class="sc-feature__media">..</div> <h3>..</h3> <p>..</p> </div>
+     <div class="sc-feature__foot"><a class="sc-link-arrow">..</a></div>
+   </article> */
+.sc-feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.sc-feature__media {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.5rem;
+    height: 9rem;
+    background: var(--sc-white);
+    border: 1px solid var(--sc-black);
+    border-radius: 12px;
+}
+.sc-feature__media img {
+    width: 4rem;
+    height: 4rem;
+}
+.sc-feature__title {
+    margin: 1rem 0 0.4rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+.sc-feature__text {
+    margin: 0;
+    font-size: var(--sc-fs-sm);
+    line-height: 1.625;
+    color: var(--sc-text-muted);
+}
+.sc-feature__foot {
+    margin-top: 1.25rem;
+    padding-top: 0.8125rem;
+    border-top: 1px solid var(--sc-border);
+}
+
+/* ---------- Decorative glow blob (hero, CTA, sign-in) ---------- */
+.sc-glow {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 50%;
+    background: rgba(201, 244, 106, 0.1);
+    filter: blur(32px);
+    pointer-events: none;
+}
+
+/* ============================================================
+   App components (used by student and admin pages)
+   ============================================================ */
 
 /* Page header */
-.sc-page-header { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-.sc-page-header__title { font-size: 1.75rem; font-weight: 700; margin: 0; }
-.sc-page-header__subtitle { color: var(--sc-text-muted); margin: 0; }
+.sc-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.sc-page-header__title {
+    margin: 0;
+    font-size: 1.75rem;
+}
+.sc-page-header__subtitle {
+    margin: 0;
+    color: var(--sc-text-muted);
+}
 
 /* Status badge (pending / approved / rejected / blocked) */
-.sc-badge { display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .65rem; border-radius: 999px; font-size: .8rem; font-weight: 600; }
-.sc-badge--pending  { background: #fef3c7; color: #92400e; }
-.sc-badge--approved { background: #dcfce7; color: #166534; }
-.sc-badge--rejected { background: #fee2e2; color: #991b1b; }
-.sc-badge--blocked  { background: #e5e7eb; color: #374151; }
+.sc-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--sc-radius-pill);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.sc-badge--pending {
+    background: var(--sc-warning-soft);
+    color: var(--sc-warning);
+}
+.sc-badge--approved {
+    background: var(--sc-lime-soft);
+    color: var(--sc-teal);
+}
+.sc-badge--rejected {
+    background: var(--sc-danger-soft);
+    color: var(--sc-danger);
+}
+.sc-badge--blocked {
+    background: var(--sc-offwhite);
+    color: var(--sc-text-muted);
+}
 
 /* Rating stars */
-.sc-rating { display: inline-flex; gap: .15rem; color: var(--sc-accent); }
-.sc-rating__star { cursor: pointer; font-size: 1.15rem; line-height: 1; }
-.sc-rating--readonly .sc-rating__star { cursor: default; }
+.sc-rating {
+    display: inline-flex;
+    gap: 0.15rem;
+}
+.sc-rating__star {
+    cursor: pointer;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: rgba(29, 57, 52, 0.25);
+}
+.sc-rating__star.is-active {
+    color: var(--sc-teal);
+}
+.sc-rating--readonly .sc-rating__star {
+    cursor: default;
+}
 
 /* Upload dropzone */
 .sc-dropzone {
-  border: 2px dashed var(--sc-border);
-  border-radius: var(--sc-radius);
-  padding: 2rem;
-  text-align: center;
-  color: var(--sc-text-muted);
-  background: var(--sc-primary-soft);
-  transition: border-color .2s ease;
+    padding: 2rem;
+    border: 2px dashed var(--sc-teal-border);
+    border-radius: var(--sc-radius-card);
+    background: var(--sc-lime-soft);
+    color: var(--sc-text-muted);
+    text-align: center;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
-.sc-dropzone.is-dragover { border-color: var(--sc-primary); }
+.sc-dropzone.is-dragover {
+    border-color: var(--sc-teal);
+    background: var(--sc-lime);
+}
 
 /* Empty state */
-.sc-empty { text-align: center; padding: 3rem 1rem; color: var(--sc-text-muted); }
-.sc-empty__icon { font-size: 2.5rem; margin-bottom: .75rem; }
-
-/* Stat card (admin dashboard) */
-.sc-stat { display: flex; align-items: center; gap: 1rem; }
-.sc-stat__value { font-size: 1.75rem; font-weight: 700; line-height: 1; }
-.sc-stat__label { color: var(--sc-text-muted); font-size: .85rem; }
+.sc-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--sc-text-muted);
+}
+.sc-empty__icon {
+    margin-bottom: 0.75rem;
+    font-size: 2.5rem;
+}
 
 /* Toast container (filled by app.js) */
-.sc-toast-wrap { position: fixed; right: 1rem; bottom: 1rem; z-index: 1100; display: grid; gap: .5rem; }
+.sc-toast-wrap {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1100;
+    display: grid;
+    gap: 0.5rem;
+}

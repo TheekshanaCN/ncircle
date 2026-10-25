@@ -10,7 +10,7 @@ storage/logs/*
 !storage/logs/.gitkeep
 
 # Dependencies and OS/editor junk
-vendor/
+/vendor/
 node_modules/
 .DS_Store
 Thumbs.db

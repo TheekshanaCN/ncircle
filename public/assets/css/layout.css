@@ -1,21 +1,219 @@
 /* ============================================================
    layout.css  -  OWNER: UI lead only
-   Page skeletons: navbar, sidebar, admin shell, content width.
+   Page skeleton shared by every page: container, header, footer,
+   section rhythm, auth split screen, admin shell.
+   Nothing page-specific lives here.
+   Load order: bootstrap -> theme.css -> layout.css -> components.css -> pages/*.css
    ============================================================ */
 
-.sc-main { min-height: calc(100vh - 140px); padding-block: 2rem; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
-/* Admin shell */
-.sc-admin { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
-.sc-admin__sidebar { background: var(--sc-surface); border-right: 1px solid var(--sc-border); padding: 1.5rem 1rem; }
-.sc-admin__content { padding: 2rem; }
-
-@media (max-width: 991.98px) {
-  .sc-admin { grid-template-columns: 1fr; }
-  .sc-admin__sidebar { border-right: 0; border-bottom: 1px solid var(--sc-border); }
-  .sc-admin__content { padding: 1rem; }
+/* ---------- Container: 1216px content inside the 1280px frame ---------- */
+.container {
+  --bs-gutter-x: 2rem;      /* 16px each side on phones */
+  max-width: 1280px;
+}
+@media (min-width: 768px) {
+  .container { --bs-gutter-x: 4rem; }   /* 32px each side, as in the design */
 }
 
-/* Auth pages (login / register) */
-.sc-auth { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
-.sc-auth__card { width: 100%; max-width: 440px; }
+/* ---------- Section rhythm ---------- */
+.sc-main { min-height: 60vh; padding-top: 1.5rem; }
+.sc-section { padding-block: var(--sc-section-gap); }
+.sc-section--alt { background: var(--sc-bg-alt); }
+
+/* ============================================================
+   Header (floating white pill, 64px tall, 21px from the top)
+   ============================================================ */
+.sc-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  padding-top: 1.3125rem;
+}
+@media (max-width: 767.98px) {
+  .sc-header { padding-top: 0.75rem; }
+}
+
+.sc-nav {
+  --bs-navbar-padding-y: 0;
+  --bs-navbar-padding-x: 0;
+  min-height: 64px;
+  padding: 0.125rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--sc-white);
+  border-radius: var(--sc-radius-nav);
+  box-shadow: var(--sc-shadow-nav);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.sc-nav__brand { display: inline-flex; align-items: center; margin-right: 1rem; }
+.sc-nav__brand img { display: block; height: 56px; width: auto; }
+
+.sc-nav .navbar-toggler { border: 0; box-shadow: none; padding: 0.25rem; }
+.sc-nav .navbar-toggler:focus-visible { outline: 2px solid var(--sc-teal); outline-offset: 2px; }
+
+.sc-nav .navbar-nav { gap: 2rem; }
+.sc-nav .nav-link {
+  padding: 0.25rem;
+  border-radius: 8px;
+  font-family: var(--sc-font-heading);
+  font-weight: 500;
+  font-size: var(--sc-fs-sm);
+  line-height: 1.25rem;
+  color: var(--sc-black);
+}
+.sc-nav .nav-link:hover,
+.sc-nav .nav-link:focus-visible,
+.sc-nav .nav-link.active {
+  background: var(--sc-lime-soft);
+  color: var(--sc-black);
+}
+
+.sc-nav__actions { display: flex; align-items: center; gap: 0.75rem; }
+
+@media (max-width: 991.98px) {
+  .sc-nav .navbar-nav { gap: 0.25rem; padding-block: 1rem 0.75rem; }
+  .sc-nav__actions { padding-bottom: 0.75rem; }
+}
+
+/* ============================================================
+   Footer
+   Markup order: brand, Honor & Legal, Faculties, Product
+   ============================================================ */
+.sc-footer {
+  margin-top: var(--sc-section-gap);
+  background: var(--sc-white);
+  border-top: 1px solid var(--sc-border);
+  padding-top: 3rem;
+}
+
+.sc-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 2rem;
+  padding-bottom: 3rem;
+}
+.sc-footer__brand { grid-column: span 2; }
+
+.sc-footer__logo { display: block; height: 90px; width: auto; }
+.sc-footer__about {
+  max-width: 384px;
+  margin: 0.75rem 0;
+  font-size: var(--sc-fs-sm);
+  line-height: 1.625;
+  color: var(--sc-text-muted);
+}
+.sc-footer__notice {
+  max-width: 384px;
+  padding: 1.125rem 0.8125rem 0.8125rem;
+  background: var(--sc-offwhite);
+  border: 1px solid var(--sc-border);
+  border-radius: 12px;
+}
+.sc-footer__notice strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: var(--sc-fs-xs);
+  line-height: 1rem;
+  font-weight: 600;
+  color: var(--sc-teal);
+}
+.sc-footer__notice p {
+  margin: 0;
+  font-size: var(--sc-fs-xs);
+  line-height: 1rem;
+  color: var(--sc-text-muted);
+}
+
+.sc-footer__heading {
+  margin: 0 0 0.75rem;
+  font-family: var(--sc-font-heading);
+  font-weight: 700;
+  font-size: var(--sc-fs-sm);
+  line-height: 1.25rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sc-teal);
+}
+.sc-footer__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.sc-footer__list a {
+  font-size: var(--sc-fs-sm);
+  line-height: 1.25rem;
+  color: var(--sc-text-muted);
+  text-decoration: none;
+}
+.sc-footer__list a:hover,
+.sc-footer__list a:focus-visible { color: var(--sc-teal); text-decoration: underline; }
+
+.sc-footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-block: 1.25rem 1.5rem;
+  border-top: 1px solid var(--sc-border);
+  font-size: var(--sc-fs-xs);
+  line-height: 1rem;
+  color: var(--sc-text-muted);
+}
+.sc-footer__bar p { margin: 0; }
+.sc-footer__meta { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; list-style: none; margin: 0; padding: 0; }
+.sc-footer__meta li + li::before { content: "\2022"; margin-right: 1.5rem; }
+
+@media (max-width: 991.98px) {
+  .sc-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc-footer__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 575.98px) {
+  .sc-footer__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ============================================================
+   Auth layout (login / register): teal showcase 7 cols + form 5 cols
+   From the Figma sign-in frame. The radius, paddings and the
+   mobile behaviour (showcase hidden) are our own decisions.
+   Markup:
+   <div class="sc-auth">
+     <aside class="sc-auth__showcase"> ...illustration + welcome text... </aside>
+     <section class="sc-auth__panel"><div class="sc-auth__card"> ...form... </div></section>
+   </div>
+   ============================================================ */
+.sc-auth {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background: var(--sc-white);
+}
+.sc-auth__showcase {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-column: span 7;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  border-radius: 28px;
+  background: var(--sc-teal);
+  color: var(--sc-white);
+}
+.sc-auth__panel { grid-column: span 5; display: grid; place-items: center; padding: 1rem; }
+.sc-auth__card {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2.375rem;
+  background: var(--sc-white);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius-card);
+  box-shadow: var(--sc-shadow-card);
+}
+
+@media (max-width: 991.98px) {
+  .sc-auth { grid-template-columns: minmax(0, 1fr); padding: 1rem; }
+  .sc-auth__showcase {
