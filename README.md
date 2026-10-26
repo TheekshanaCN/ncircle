@@ -1,4 +1,4 @@
-# NSBM StudyCircle
+# NSBM NCircle
 
 Student community for notes and study sharing.
 Stack: HTML, CSS, JavaScript, PHP, MySQL (plain PHP, MVC-lite, no framework).
