@@ -1,6 +1,6 @@
 <?php
 /**
- * views/layouts/main.php  -  page shell for the student-facing site (UI lead only)
+ * views/layouts/main.php  -  page shell for the public site (UI lead only)
  * Receives $content (the page HTML) plus optional $title and $pageCss.
  */
 ?>
@@ -11,16 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($title ?? "Ncircle") ?></title>
 
-    <!-- Load order matters: bootstrap -> theme -> layout -> components -> page -->
-    <link rel="stylesheet" href="<?= asset(
-        "vendor/bootstrap/bootstrap.min.css",
+    <!-- Load order matters: bootstrap -> icons -> theme -> layout -> components -> page -->
+    <link rel="stylesheet" href="<?= e(
+        asset("vendor/bootstrap/bootstrap.min.css"),
     ) ?>">
-    <link rel="stylesheet" href="<?= asset("css/theme.css") ?>">
-    <link rel="stylesheet" href="<?= asset("css/layout.css") ?>">
-    <link rel="stylesheet" href="<?= asset("css/components.css") ?>">
+    <link rel="stylesheet" href="<?= e(
+        asset("vendor/bootstrap-icons/font/bootstrap-icons.min.css"),
+    ) ?>">
+    <link rel="stylesheet" href="<?= e(asset("css/theme.css")) ?>">
+    <link rel="stylesheet" href="<?= e(asset("css/layout.css")) ?>">
+    <link rel="stylesheet" href="<?= e(asset("css/components.css")) ?>">
     <?php if (!empty($pageCss)): ?>
-        <link rel="stylesheet" href="<?= asset(
-            "css/pages/" . e($pageCss) . ".css",
+        <link rel="stylesheet" href="<?= e(
+            asset("css/pages/" . $pageCss . ".css"),
         ) ?>">
     <?php endif; ?>
 </head>
@@ -34,5 +37,10 @@
     </main>
 
     <?php include BASE_PATH . "/views/partials/footer.php"; ?>
+
+    <script src="<?= e(
+        asset("vendor/bootstrap/bootstrap.bundle.min.js"),
+    ) ?>"></script>
+    <script src="<?= e(asset("js/app.js")) ?>"></script>
 </body>
 </html>

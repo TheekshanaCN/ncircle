@@ -28,11 +28,35 @@ function asset(string $path): string
     return base_url() . '/assets/' . ltrim($path, '/');
 }
 
-/** Include a reusable UI piece from views/components/ with parameters. */
-function component(string $name, array $data = []): string
+/**
+ * Render a reusable UI piece from views/components/<name>.php and RETURN the HTML.
+ *   <?= component('status-badge', ['status' => 'pending']) ?>
+ * The array keys become variables inside the component file.
+ * (Parameter names start with __ so a component can safely receive a 'name' or 'data' key.)
+ */
+function component(string $__component, array $__data = []): string
 {
-    extract($data, EXTR_SKIP);
+    extract($__data, EXTR_SKIP);
     ob_start();
-    include BASE_PATH . '/views/components/' . $name . '.php';
+    include BASE_PATH . '/views/components/' . $__component . '.php';
     return (string) ob_get_clean();
+}
+
+/**
+ * Turn an array into escaped HTML attributes.
+ *   html_attrs(['data-id' => 5, 'disabled' => true, 'hidden' => false]) -> ' data-id="5" disabled'
+ * true = bare attribute, false/null = skipped.
+ */
+function html_attrs(array $attrs): string
+{
+    $out = '';
+    foreach ($attrs as $key => $value) {
+        if ($value === false || $value === null) {
+            continue;
+        }
+        $out .= $value === true
+            ? ' ' . e((string) $key)
+            : ' ' . e((string) $key) . '="' . e((string) $value) . '"';
+    }
+    return $out;
 }
