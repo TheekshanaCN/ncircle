@@ -340,6 +340,85 @@ $sampleResource = [
     ]) ?>
 </section>
 
+<section class="mb-5">
+    <h2 class="h4 mb-3">Extra button variants</h2>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <?= component("button", ["label" => "Dark", "variant" => "dark"]) ?>
+        <?= component("button", ["label" => "Soft", "variant" => "soft"]) ?>
+        <?= component("button", ["label" => "Quiet outline", "variant" => "outline", "class" => "sc-btn-quiet"]) ?>
+        <?= component("button", ["label" => "Extra small", "variant" => "dark", "class" => "btn-xs"]) ?>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h2 class="h4 mb-3">Avatars and state pills</h2>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <?= component("avatar", ["name" => "Nimesh Perera", "tone" => "teal", "ring" => true]) ?>
+        <?= component("avatar", ["name" => "Tharushi Wijesinghe", "tone" => "lime"]) ?>
+        <?= component("avatar", ["name" => "Kavindu Silva", "tone" => "pale", "size" => "sm"]) ?>
+        <?= component("avatar", ["name" => "Sachini W", "tone" => "grey", "size" => "lg"]) ?>
+        <span class="sc-state sc-state--lime">SOLVED IN 11 MINS</span>
+        <span class="sc-state sc-state--dark">ACTIVE DISCUSSION</span>
+        <span class="sc-state sc-state--muted">NEEDS ANSWER</span>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h2 class="h4 mb-3">Stat tiles (dashboard)</h2>
+    <div class="row g-3">
+        <div class="col-md-4"><?= component("stat-tile", ["label" => "Notes shared", "value" => 2481, "tag" => "+12.5%", "footIcon" => "folder2", "foot" => "Active peer vaults across 6 faculties"]) ?></div>
+        <div class="col-md-4"><?= component("stat-tile", ["label" => "Active students", "value" => 1236, "tag" => "+7.2%", "footIcon" => "dot", "foot" => "Live pod study active now"]) ?></div>
+        <div class="col-md-4"><?= component("stat-tile", ["label" => "Questions answered", "value" => 843, "tag" => "-2.5%", "down" => true, "footIcon" => "patch-check", "foot" => "Median resolution: 14m"]) ?></div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <h2 class="h4 mb-3">Stacked bars and progress</h2>
+    <div class="sc-panel">
+        <?= component("stacked-bars", ["height" => 140, "median" => 45, "items" => [
+            ["label" => "Mon", "top" => 25, "bottom" => 40, "title" => "Mon: 5 notes, 8 answers"],
+            ["label" => "Tue", "top" => 30, "bottom" => 55, "active" => true, "tooltip" => "Peak sprint: 6 notes / 11 answers", "title" => "Tue: 6 notes, 11 answers"],
+            ["label" => "Wed", "top" => 40, "bottom" => 0, "title" => "Wed: 8 notes, 0 answers"],
+        ]]) ?>
+        <div class="sc-progress mt-3" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" aria-label="Demo progress"><span style="width: 68%"></span></div>
+    </div>
+</section>
+
+<?php
+$demoNote = [
+    "id" => 12, "user_id" => 1, "subject_id" => 1, "title" => "Normalization Cheat Sheet — Database Systems",
+    "description" => "Step-by-step canonical decomposition guide covering 1NF to BCNF with NSBM exam scenarios.",
+    "uploader" => "Tharushi Wijesinghe", "uploader_username" => "tharushi_w", "created_at" => date("Y-m-d H:i:s", time() - 7200),
+    "category" => "Study Guide", "category_slug" => "study-guide", "subject" => "CS204", "subject_name" => "Database Systems",
+    "file_type" => "pdf", "file_size" => 2516582, "pages" => 24, "rating" => 4.9, "rating_count" => 126,
+    "downloads_count" => 1820, "comments_count" => 18, "is_bookmarked" => 0,
+];
+?>
+<link rel="stylesheet" href="<?= e(asset("css/pages/resources.css")) ?>">
+<section class="mb-5">
+    <h2 class="h4 mb-3">Find Members cards and live badge</h2>
+    <div class="sc-card-grid">
+        <?= component("member-card", ["member" => ["id" => 1, "name" => "Ishara Dias", "faculty" => "Business", "academic_year" => 1, "bio" => "Organizational behaviour and survey research.", "skills" => "Market research, Interviews", "open_to_help" => 1]]) ?>
+        <?= component("request-card", ["request" => ["id" => 1, "type" => "research", "status" => "open", "created_at" => date("Y-m-d H:i:s", time() - 7200), "title" => "Need a Business student for market research", "description" => "A student budgeting app needs a market survey.", "faculties" => ["Business"], "skills" => "Surveys", "author" => "Kavindu Silva", "author_faculty" => "Computing", "responses_count" => 2]]) ?>
+    </div>
+    <p class="mt-3"><?= component("live-badge") ?></p>
+</section>
+
+<section class="mb-5">
+    <h2 class="h4 mb-3">Note card and note row</h2>
+    <?= component("note-card", ["resource" => $demoNote]) ?>
+    <div class="mt-3"><?= component("note-row", ["resource" => $demoNote]) ?></div>
+</section>
+
+<section class="mb-5">
+    <h2 class="h4 mb-3">Thread, pod and group cards</h2>
+    <div class="sc-card-grid">
+        <?= component("thread-card", ["question" => ["id" => 1, "title" => "What is the concrete difference between 2NF and 3NF?", "subject" => "CS204", "subject_name" => "Database", "author" => "Sachini W", "lead_answerer" => "Lasith W", "created_at" => date("Y-m-d H:i:s", time() - 2700), "solved_at" => date("Y-m-d H:i:s", time() - 2040), "replies" => 5, "upvotes" => 32, "views" => 142]]) ?>
+        <?= component("pod-card", ["session" => ["id" => 1, "host_id" => 0, "mode" => "hybrid", "starts_at" => date("Y-m-d 15:30:00", time() + 86400), "ends_at" => date("Y-m-d 17:00:00", time() + 86400), "location" => "Faculty of Computing, Lab 04", "meeting_url" => "https://meet.google.com/abc-defg-hij", "subject" => "CS204", "title" => "Normalization Problem Solving Sprint", "description" => "Bring last year's question 3.", "attendees" => 8, "capacity" => 10, "preview" => ["Tharushi W", "Kavindu S"], "my_status" => null]]) ?>
+        <?= component("group-card", ["group" => ["id" => 1, "name" => "CS204 Exam Sprint Crew", "subject" => "CS204", "subject_name" => "Database Systems", "description" => "Weekly normalization and SQL drills.", "members_count" => 6, "max_members" => 12, "preview" => ["Tharushi W", "Nimesh P", "Kavindu S"], "is_member" => true]]) ?>
+    </div>
+</section>
+
 <?= component("confirm-modal", [
     "id" => "demoModal",
     "title" => "Delete this note?",

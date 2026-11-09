@@ -9,7 +9,7 @@
  * label        text (escaped)
  * href         if set, renders <a>; otherwise <button>
  * type         button | submit   (only for <button>, default button)
- * variant      primary (lime) | outline | light (on teal) | danger | link
+ * variant      primary (lime) | dark (teal) | soft (pale lime) | outline | light (on teal) | danger | link
  * size         sm | lg | '' (default)
  * icon         Bootstrap Icons name without "bi-", e.g. 'arrow-right'
  * iconPosition start | end
@@ -27,6 +27,8 @@ $attrs        = $attrs ?? [];
 
 $variants = [
     'primary' => 'btn-primary',
+    'dark'    => 'btn-dark',
+    'soft'    => 'btn-soft',
     'outline' => 'btn-outline-primary',
     'light'   => 'btn-outline-light',
     'danger'  => 'btn-danger',
