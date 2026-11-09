@@ -1,0 +1,31 @@
+/* ============================================================
+   pages/members.css  -  Find Members. Shares bars, tabs and the detail layout.
+   ============================================================ */
+@import url("groups.css");
+
+.members-open {
+    cursor: pointer;
+}
+.members-faculties {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 0.25rem 1rem;
+}
+.members-decide {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.625rem;
+}
+.members-result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.625rem 0;
+    font-size: var(--sc-fs-sm);
+    overflow-wrap: anywhere;
+}
+.members-result a {
+    font-weight: 600;
+    color: var(--sc-heading);
+}
