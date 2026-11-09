@@ -99,3 +99,316 @@
         flex-direction: column;
     }
 }
+
+/* ============================================================
+   SHARED SECTION SPACING
+   ============================================================ */
+.landing-section {
+    padding-block: 5rem 0;
+    scroll-margin-top: 5rem;
+}
+
+/* ============================================================
+   2. METRICS: title left, supporting text right (Figma)
+   ============================================================ */
+.landing-metrics {
+    padding-top: 3rem;
+    scroll-margin-top: 5rem;
+}
+.landing-metrics__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 3rem;
+    margin-bottom: 2.25rem;
+}
+.landing-metrics__head .sc-section-head__title {
+    margin-top: 0.75rem;
+}
+.landing-metrics__head .sc-live {
+    margin-top: 0.5rem;
+}
+.sc-bubble[hidden] {
+    display: none;
+}
+.landing-metrics__head p {
+    flex: 0 1 27rem;
+    margin: 0;
+    line-height: 1.5;
+    color: var(--sc-text-muted);
+    text-align: right;
+}
+@media (max-width: 767.98px) {
+    .landing-metrics__head p {
+        text-align: left;
+    }
+}
+
+/* ============================================================
+   4. ACTIVITY PREVIEW
+   ============================================================ */
+.landing-preview {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+    padding: 2.5rem;
+    border-radius: 28px;
+    background: var(--sc-teal);
+}
+.landing-preview__chart,
+.landing-preview__card {
+    padding: 1.5rem;
+    border: 1px solid var(--sc-border);
+    border-radius: 20px;
+    background: var(--sc-surface);
+}
+.landing-preview__chart {
+    padding: 2rem;
+}
+.landing-preview h3 {
+    margin: 0;
+    font-size: var(--sc-fs-sm);
+    line-height: 1.25rem;
+}
+.landing-preview__chart h3 {
+    font-size: 1rem;
+}
+.landing-preview__chart-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+}
+.landing-preview__chart-head p,
+.landing-preview__note {
+    margin: 0.125rem 0 0;
+    font-size: var(--sc-fs-xs);
+    line-height: 1rem;
+    color: var(--sc-text-muted);
+}
+.landing-preview__note {
+    font-size: 0.6875rem;
+    text-align: center;
+}
+.landing-preview__chart-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin-top: 1rem;
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-muted);
+}
+.landing-preview__chart-foot strong {
+    font-weight: 600;
+    color: var(--sc-heading);
+}
+.landing-preview__side {
+    display: grid;
+    gap: 1.25rem;
+}
+.landing-preview__heat-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.sc-chart-tip--static {
+    padding: 0.25rem 0.625rem;
+    border-radius: 6px;
+    font-size: 0.625rem;
+}
+
+.sc-heat {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.25rem;
+    margin-top: 0.75rem;
+}
+.sc-heat__day {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--sc-text-muted);
+}
+.sc-heat__cell {
+    height: 1.25rem;
+    border-radius: 4px;
+    transition: transform 0.15s ease;
+}
+.sc-heat__cell:hover {
+    transform: scale(1.25);
+    box-shadow: 0 0 0 2px var(--sc-heading);
+}
+.sc-heat__cell--0 {
+    background: var(--sc-offwhite);
+}
+.sc-heat__cell--1 {
+    background: var(--sc-lime-pale);
+}
+.sc-heat__cell--2 {
+    background: var(--sc-hatch);
+}
+.sc-heat__cell--3 {
+    background: var(--sc-lime);
+}
+.sc-heat__legend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.625rem;
+    color: var(--sc-text-muted);
+}
+.sc-heat__scale {
+    display: flex;
+    gap: 0.25rem;
+}
+.sc-heat__scale i {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+}
+
+.sc-bubbles {
+    position: relative;
+    height: 11.5rem;
+    margin: 0.5rem auto;
+    max-width: 18rem;
+}
+.sc-bubble {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--sc-surface);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.1;
+}
+.sc-bubble strong {
+    font-family: var(--sc-font-heading);
+}
+.sc-bubble span {
+    font-size: 0.625rem;
+}
+.sc-bubble--teal {
+    left: 0;
+    top: 1.25rem;
+    width: 8rem;
+    height: 8rem;
+    background: var(--sc-teal);
+    color: var(--sc-lime);
+}
+.sc-bubble--teal strong {
+    font-size: 1.25rem;
+}
+.sc-bubble--teal span {
+    color: var(--sc-white);
+}
+.sc-bubble--lime {
+    right: 0.5rem;
+    top: 0;
+    width: 6rem;
+    height: 6rem;
+    background: var(--sc-lime);
+    color: var(--sc-on-lime);
+}
+.sc-bubble--pale {
+    right: 0;
+    bottom: 0;
+    width: 3.75rem;
+    height: 3.75rem;
+    background: var(--sc-offwhite);
+    color: var(--sc-heading);
+}
+.sc-bubble--pale strong {
+    font-size: 0.75rem;
+}
+.sc-bubble--pale span {
+    font-size: 0.5rem;
+}
+
+@media (max-width: 991.98px) {
+    .landing-preview {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1rem;
+        border-radius: 24px;
+    }
+    .landing-preview__chart {
+        padding: 1.25rem;
+    }
+}
+@media (max-width: 575.98px) {
+    /* Ten month bars do not fit with a floating tooltip on a phone */
+    .landing-preview .sc-bars .sc-chart-tip,
+    .landing-preview .sc-bars__median em {
+        display: none;
+    }
+    .landing-preview .sc-bars__labels {
+        font-size: 0.5625rem;
+        gap: 0;
+    }
+}
+
+/* ============================================================
+   5. STEPS: plain eyebrow in this section (Figma)
+   ============================================================ */
+.landing-steps .sc-eyebrow {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+/* ============================================================
+   6. CTA BANNER
+   ============================================================ */
+.landing-cta {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    margin-top: 5rem;
+    padding: 4rem clamp(1.25rem, 8vw, 8rem);
+    border-radius: 28px;
+    background: var(--sc-teal);
+    text-align: center;
+}
+.landing-cta__glow {
+    z-index: -1;
+}
+.landing-cta__glow--a {
+    top: -6rem;
+    left: -6rem;
+}
+.landing-cta__glow--b {
+    right: -6rem;
+    bottom: -6rem;
+}
+.landing-cta__title {
+    margin: 0;
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    line-height: 1;
+    color: var(--sc-white);
+}
+.landing-cta__title .sc-script {
+    font-size: 1.5em;
+}
+.landing-cta__lead {
+    max-width: 40rem;
+    margin: 1.5rem auto 0;
+    font-size: var(--sc-fs-lead);
+    line-height: 1.5556;
+    color: var(--sc-on-dark);
+}
+.landing-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.75rem;
+}
