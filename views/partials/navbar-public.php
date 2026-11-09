@@ -28,17 +28,26 @@
                 </ul>
 
                 <div class="sc-nav__actions">
-                    <?= component("button", [
-                        "label" => "Sign in",
-                        "size" => "sm",
-                        "variant" => "outline",
-                        "href" => url("/login"),
-                    ]) ?>
-                    <?= component("button", [
-                        "label" => "Join the Ncircle",
-                        "size" => "sm",
-                        "href" => url("/register"),
-                    ]) ?>
+                    <?= component("theme-toggle") ?>
+                    <?php if (Auth::check()): ?>
+                        <?= component("button", [
+                            "label" => "Go to dashboard",
+                            "size" => "sm",
+                            "href" => url("/dashboard"),
+                        ]) ?>
+                    <?php else: ?>
+                        <?= component("button", [
+                            "label" => "Sign in",
+                            "size" => "sm",
+                            "variant" => "outline",
+                            "href" => url("/login"),
+                        ]) ?>
+                        <?= component("button", [
+                            "label" => "Join the Ncircle",
+                            "size" => "sm",
+                            "href" => url("/register"),
+                        ]) ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
