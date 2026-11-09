@@ -1,0 +1,56 @@
+/* ============================================================
+   pages/forum.css  -  forum list and thread. Pulls the search bar and tabs from resources.css.
+   ============================================================ */
+@import url("resources.css");
+
+.thread-title {
+    margin: 0.75rem 0;
+    font-size: 1.5rem;
+    line-height: 1.25;
+}
+.thread-body {
+    margin-bottom: 1rem;
+}
+.thread-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--sc-border);
+    font-size: var(--sc-fs-xs);
+}
+.thread-foot a {
+    font-weight: 600;
+    color: var(--sc-ink);
+    text-decoration: none;
+}
+.thread-foot__actions {
+    margin-left: auto;
+}
+.answers-title {
+    margin-bottom: 0.875rem;
+}
+.answer {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    margin-bottom: 0.875rem;
+}
+.answer--accepted {
+    border-color: var(--sc-lime);
+    box-shadow: 0 0 0 2px var(--sc-lime-soft);
+}
+.answer__vote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: var(--sc-fs-sm);
+    color: var(--sc-ink);
+}
+.answer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.625rem;
+}
