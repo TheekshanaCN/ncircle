@@ -1,0 +1,24 @@
+/* ============================================================
+   pages/groups.css  -  groups and pods. Shares detail layout with forum.css.
+   ============================================================ */
+@import url("forum.css");
+
+.group-past-title {
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+}
+.group-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+}
+.group-hero__text {
+    flex: 1 1 18rem;
+    min-width: 0;
+}
+.group-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
