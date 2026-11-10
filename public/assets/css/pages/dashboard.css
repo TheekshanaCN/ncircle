@@ -1,0 +1,224 @@
+/* ============================================================
+   pages/dashboard.css  -  student dashboard (Figma frame "Dashboard")
+   ============================================================ */
+.dash-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 2rem;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 28px;
+    background: var(--sc-teal);
+    color: var(--sc-white);
+}
+/* The lime glow from the landing hero */
+.dash-hero::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -7rem;
+    left: -5rem;
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
+    background: rgba(201, 244, 106, 0.12);
+    filter: blur(40px);
+    pointer-events: none;
+}
+.dash-hero__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--sc-on-dark-border);
+    border-radius: var(--sc-radius-pill);
+    background: var(--sc-on-dark-surface);
+    color: var(--sc-white);
+    font-family: var(--sc-font-heading);
+    font-size: var(--sc-fs-xs);
+    font-weight: 600;
+    line-height: 1rem;
+}
+.dash-hero__title {
+    margin: 1rem 0 0.5rem;
+    font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--sc-white);
+}
+.dash-hero__title .sc-script {
+    font-size: 1.45em;
+    line-height: 0.8;
+    letter-spacing: 0.01em;
+}
+.dash-hero__sub {
+    margin: 0;
+    font-size: var(--sc-fs-sm);
+    color: var(--sc-on-dark);
+}
+.dash-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+}
+.dash-hero__actions .btn {
+    --bs-btn-padding-x: 1.125rem;
+    --bs-btn-font-size: var(--sc-fs-xs);
+}
+.dash-hero__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+    background: var(--sc-surface);
+    text-align: center;
+}
+.dash-hero__card img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+.dash-hero__card strong {
+    font-family: var(--sc-font-heading);
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-ink);
+}
+.dash-hero__card span {
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-muted);
+}
+
+.dash-goal {
+    margin-top: 1.25rem;
+}
+.dash-goal__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin-bottom: 0.5rem;
+    font-family: var(--sc-font-heading);
+    font-size: var(--sc-fs-xs);
+    font-weight: 600;
+    color: var(--sc-white);
+}
+.dash-goal__muted {
+    font-family: var(--sc-font-body);
+    font-weight: 400;
+    color: var(--sc-on-dark-muted);
+}
+.dash-goal .sc-progress {
+    background: var(--sc-on-dark-surface);
+}
+
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dash-chart-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+}
+.dash-chart-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+}
+
+.dash-mastery {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sc-border);
+}
+.dash-mastery__label {
+    font-family: var(--sc-font-heading);
+    font-size: var(--sc-fs-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sc-text-muted);
+}
+.dash-mastery__pill {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--sc-border);
+    border-radius: var(--sc-radius-pill);
+    font-family: var(--sc-font-heading);
+    font-size: var(--sc-fs-xs);
+    font-weight: 600;
+    color: var(--sc-ink);
+}
+.dash-mastery__pill b {
+    color: var(--sc-on-lime);
+    padding: 0 0.375rem;
+    border-radius: var(--sc-radius-pill);
+    background: var(--sc-lime);
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+.dash-split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+}
+.dash-pods {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 1199.98px) {
+    .dash-hero {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .dash-hero__card {
+        display: none;
+    }
+    .dash-pods {
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    }
+}
+@media (max-width: 991.98px) {
+    .dash-split {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+}
+@media (max-width: 767.98px) {
+    .dash-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .dash-hero,
+    .sc-panel {
+        padding: 1.125rem;
+    }
+    /* The full tooltip is wider than a phone bar, and each bar still has a title */
+    .sc-bars .sc-chart-tip {
+        display: none;
+    }
+    .sc-bars__plot {
+        margin-top: 1rem;
+    }
+}
