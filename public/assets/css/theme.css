@@ -6,7 +6,7 @@
    a hex color, font or radius anywhere else.
 
    Load order:
-   bootstrap -> theme.css -> layout.css -> components.css -> pages/*.css
+   bootstrap -> theme.css -> layout.css -> components.css -> motion.css -> pages/*.css
    ============================================================ */
 
 /* ---------- Fonts (self-hosted, so the demo works offline) ----------
@@ -62,6 +62,34 @@
         255,
         0.3
     ); /* ghost button border on teal */
+
+    /* ---------- App screens (read from the Dashboard, Browse and auth frames) ---------- */
+    --sc-ink: #131e1c; /* darkest text and auth background */
+    --sc-teal-deep: #132623; /* auth page gradient start */
+    --sc-teal-mid: #29443e; /* auth page gradient glow */
+    --sc-teal-soft: rgba(29, 57, 52, 0.1); /* quiet pills on white */
+    --sc-grey-mid: #5f6b68; /* grey avatar */
+    --sc-olive: #4c6700; /* password rules, success text */
+    --sc-lime-pale: #e6f9b8; /* progress track tint, soft CTA hover */
+    --sc-lime-button: #dbf78e; /* soft lime button */
+    --sc-coral: #f26d6d; /* negative trend chip, "Be first" */
+    --sc-coral-soft: #fde3e3; /* error banner */
+    --sc-error: #ba1a1a; /* error text */
+    --sc-star: #e8a317; /* filled rating star on note cards */
+    --sc-input-fill: #f5f5f4; /* filled inputs on sign in */
+    --sc-mint: #e6f4ef; /* check-your-inbox panel */
+    --sc-control-border: rgba(0, 0, 0, 0.38); /* round icon buttons, search pill */
+    --sc-hatch: repeating-linear-gradient(
+        135deg,
+        var(--sc-lime) 0 4px,
+        var(--sc-lime-button) 4px 8px
+    ); /* the diagonal bars in charts and progress */
+
+    /* ---------- Added for the dark theme: these change with it ---------- */
+    --sc-on-lime: #1d3934; /* dark text on lime. The same in both themes */
+    --sc-chart-b: var(--sc-teal); /* the solid chart segment */
+    --sc-star-off: rgba(29, 57, 52, 0.25);
+    --sc-glass: rgba(255, 255, 255, 0.95); /* floating bars */
 
     /* ---------- Semantic aliases (use these in components) ---------- */
     --sc-primary: var(--sc-teal);
@@ -169,7 +197,7 @@ h6,
     color: var(--sc-lime);
 }
 .sc-script--teal {
-    color: var(--sc-teal);
+    color: var(--sc-heading);
 }
 
 /* Module-code chip, e.g. CS204 / SE301 */
@@ -220,9 +248,9 @@ h6,
 }
 
 .btn-outline-primary {
-    --bs-btn-color: var(--sc-black);
-    --bs-btn-bg: var(--sc-white);
-    --bs-btn-border-color: var(--sc-black);
+    --bs-btn-color: var(--sc-text);
+    --bs-btn-bg: var(--sc-surface);
+    --bs-btn-border-color: var(--sc-text);
     --bs-btn-hover-color: var(--sc-white);
     --bs-btn-hover-bg: var(--sc-teal);
     --bs-btn-hover-border-color: var(--sc-teal);
@@ -230,6 +258,53 @@ h6,
     --bs-btn-active-bg: var(--sc-teal);
     --bs-btn-active-border-color: var(--sc-teal);
     --bs-btn-font-weight: 600;
+}
+
+/* Solid teal: "Sign in", "Upload note", "Join" */
+.btn-dark {
+    --bs-btn-color: var(--sc-white);
+    --bs-btn-bg: var(--sc-teal);
+    --bs-btn-border-color: var(--sc-teal);
+    --bs-btn-hover-color: var(--sc-white);
+    --bs-btn-hover-bg: var(--sc-teal-deep);
+    --bs-btn-hover-border-color: var(--sc-teal-deep);
+    --bs-btn-active-color: var(--sc-white);
+    --bs-btn-active-bg: var(--sc-teal-deep);
+    --bs-btn-active-border-color: var(--sc-teal-deep);
+    --bs-btn-disabled-color: var(--sc-white);
+    --bs-btn-disabled-bg: var(--sc-teal);
+    --bs-btn-disabled-border-color: var(--sc-teal);
+}
+
+/* Pale lime: "Join the Ncircle" on the auth card, "Download" */
+.btn-soft {
+    --bs-btn-color: var(--sc-black);
+    --bs-btn-bg: var(--sc-lime-button);
+    --bs-btn-border-color: var(--sc-lime-button);
+    --bs-btn-hover-color: var(--sc-black);
+    --bs-btn-hover-bg: var(--sc-lime);
+    --bs-btn-hover-border-color: var(--sc-lime);
+    --bs-btn-active-color: var(--sc-black);
+    --bs-btn-active-bg: var(--sc-lime);
+    --bs-btn-active-border-color: var(--sc-lime);
+}
+
+/* Compact pill for cards and filter panels */
+.btn-xs {
+    --bs-btn-padding-x: 1.125rem;
+    --bs-btn-padding-y: 0.5rem;
+    --bs-btn-font-size: var(--sc-fs-xs);
+}
+
+/* Outline with a grey hairline instead of black */
+.sc-btn-quiet {
+    --bs-btn-border-color: var(--sc-border);
+    --bs-btn-color: var(--sc-heading);
+}
+.sc-btn-danger-text {
+    --bs-btn-color: var(--sc-error);
+    --bs-btn-hover-bg: var(--sc-error);
+    --bs-btn-hover-border-color: var(--sc-error);
 }
 
 /* Ghost button for use ON teal sections (hero "Sign in", CTA banner) */
@@ -245,6 +320,118 @@ h6,
 /* Form focus ring in brand color */
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--sc-teal);
+    border-color: var(--sc-heading);
     box-shadow: 0 0 0 0.2rem rgba(201, 244, 106, 0.45);
+}
+
+/* ============================================================
+   Dark theme. head.php sets data-theme and data-bs-theme on <html>.
+   Colours flip here, so components only ever use tokens.
+   ============================================================ */
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --sc-bg: #0e1816;
+    --sc-surface: #16231f;
+    --sc-offwhite: #21312c;
+    --sc-text: #eaf2ef;
+    --sc-ink: #eaf2ef;
+    --sc-heading: #dff0e9;
+    --sc-text-muted: #a3b4ae;
+    --sc-teal: #1f4339;
+    --sc-teal-deep: #0f201b;
+    --sc-teal-mid: #24463d;
+    --sc-teal-soft: rgba(255, 255, 255, 0.08);
+    --sc-teal-border: rgba(255, 255, 255, 0.16);
+    --sc-border-subtle: #2b3d37;
+    --sc-control-border: rgba(255, 255, 255, 0.28);
+    --sc-lime-soft: rgba(201, 244, 106, 0.16);
+    --sc-input-fill: #1c2b27;
+    --sc-mint: #1c3029;
+    --sc-olive: #bfe36a;
+    --sc-danger: #ff9a8f;
+    --sc-danger-soft: #3a1f1c;
+    --sc-error: #ff9a8f;
+    --sc-coral-soft: #3a1f1c;
+    --sc-warning: #e9b65c;
+    --sc-warning-soft: #33290f;
+    --sc-chart-b: #86bdb0;
+    --sc-star-off: rgba(255, 255, 255, 0.25);
+    --sc-glass: rgba(22, 35, 31, 0.92);
+    --sc-shadow-card: 0 8px 18px rgba(0, 0, 0, 0.35);
+    --sc-shadow-nav: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+    --bs-primary-rgb: 201, 244, 106;
+    --bs-body-bg: #0e1816;
+    --bs-body-bg-rgb: 14, 24, 22;
+    --bs-body-color: #eaf2ef;
+    --bs-body-color-rgb: 234, 242, 239;
+    --bs-heading-color: #dff0e9;
+    --bs-border-color: #2b3d37;
+    --bs-secondary-color: #a3b4ae;
+    --bs-tertiary-bg: #21312c;
+    --bs-link-color: #dff0e9;
+    --bs-link-color-rgb: 223, 240, 233;
+    --bs-link-hover-color: #c9f46a;
+    --bs-link-hover-color-rgb: 201, 244, 106;
+}
+html[data-theme="dark"] body {
+    background: var(--sc-bg);
+}
+html[data-theme="dark"] .modal-content,
+html[data-theme="dark"] .dropdown-menu {
+    --bs-modal-bg: var(--sc-surface);
+    --bs-dropdown-bg: var(--sc-surface);
+    --bs-dropdown-link-hover-bg: var(--sc-offwhite);
+    --bs-dropdown-link-color: var(--sc-text);
+    --bs-dropdown-link-hover-color: var(--sc-text);
+}
+
+/* The logo has black and teal artwork, so it sits on a small white plate */
+html[data-theme="dark"] .sc-nav__brand img,
+html[data-theme="dark"] .sc-sidebar__logo img,
+html[data-theme="dark"] .sc-footer__logo,
+html[data-theme="dark"] .sc-auth__logo img {
+    border-radius: 12px;
+    background: var(--sc-white);
+}
+
+/* These illustrations are drawn for a white background, so they keep one */
+html[data-theme="dark"] .dash-hero__card,
+html[data-theme="dark"] .sc-feature__media {
+    background: var(--sc-white);
+}
+html[data-theme="dark"] .sc-feature__media {
+    border-color: transparent;
+}
+html[data-theme="dark"] .dash-hero__card strong,
+html[data-theme="dark"] .dash-hero__card span {
+    color: var(--sc-on-lime);
+}
+html[data-theme="dark"] .sc-feature__badge--outline {
+    background: var(--sc-white);
+    border-color: #e5e7eb;
+    color: #5f6b68;
+}
+
+/* Sections that are text on the page, not on their usual lime */
+html[data-theme="dark"] .landing-steps .sc-eyebrow {
+    color: var(--sc-heading);
+}
+
+/* Light and dark switch: show the icon for the theme you can switch to */
+.sc-theme-toggle__sun {
+    display: none;
+}
+html[data-theme="dark"] .sc-theme-toggle__sun {
+    display: inline-block;
+}
+html[data-theme="dark"] .sc-theme-toggle__moon {
+    display: none;
+}
+.sc-round-btn.sc-auth__theme {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
 }

@@ -13,10 +13,11 @@
 $title    = $title ?? '';
 $subtitle = $subtitle ?? '';
 $actions  = $actions ?? '';
+$titleTag = $titleTag ?? '';
 ?>
 <div class="sc-page-header">
     <div>
-        <h1 class="sc-page-header__title"><?= e($title) ?></h1>
+        <h1 class="sc-page-header__title"><?= e($title) ?><?php if ($titleTag !== ''): ?> <span class="sc-tag sc-tag--sm"><?= e($titleTag) ?></span><?php endif; ?></h1>
         <?php if ($subtitle !== ''): ?>
             <p class="sc-page-header__subtitle"><?= e($subtitle) ?></p>
         <?php endif; ?>
