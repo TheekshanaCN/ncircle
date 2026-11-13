@@ -9,6 +9,7 @@ class HomeController extends Controller
         $this->view('home/index', [
             'title'   => 'Ncircle | NSBM StudyCircle',
             'pageCss' => 'landing',   // loads assets/css/pages/landing.css
+            'live'    => StatsService::landingCached(),
         ]);
     }
 }
