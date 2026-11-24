@@ -6,7 +6,7 @@
  *   php tests/smoke.php http://127.0.0.1:8770            (in another)
  *
  * It creates throwaway accounts and content, so point it at a test database, never your real one:
- *   DB_NAME=ncircle_test php -S 127.0.0.1:8770 -t public public/index.php
+ *   MAIL_DRIVER=log DB_NAME=ncircle_test php -S 127.0.0.1:8770 -t public public/index.php
  */
 $base = rtrim($argv[1] ?? 'http://127.0.0.1:8770', '/');
 $tmp = sys_get_temp_dir() . '/ncircle-smoke-' . getmypid();

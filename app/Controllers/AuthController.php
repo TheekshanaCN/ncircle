@@ -5,6 +5,7 @@
 class AuthController extends Controller
 {
     private const RESEND_SECONDS = 60;
+    private const MAIL_FAILED = "We could not send the verification email. Please try again in a moment.";
 
     public function showLogin(): void
     {
@@ -96,7 +97,9 @@ class AuthController extends Controller
 
         $userId = User::create($data);
         Session::set("pending_user_id", $userId);
-        $this->sendVerification(User::find($userId));
+        if (!$this->sendVerification(User::find($userId))) {
+            Flash::add("danger", self::MAIL_FAILED);
+        }
         Response::redirect("/check-inbox");
     }
 
@@ -116,6 +119,7 @@ class AuthController extends Controller
         $this->view("auth/check-inbox", [
             "title" => "Check your inbox | Ncircle",
             "email" => $user["email"],
+            "sent" => !Session::get("verify_mail_failed", false),
             "wait" => max(0, (int) Session::get("resend_at", 0) - time()),
             "devLink" => APP_DEBUG && MailService::isLogDriver() ? Session::get("dev_verify_link") : null,
         ], "auth");
@@ -130,23 +134,31 @@ class AuthController extends Controller
         if ((int) Session::get("resend_at", 0) > time()) {
             Flash::add("warning", "Please wait a moment before asking for another link.");
         } elseif ($user["email_verified_at"] === null) {
-            $this->sendVerification($user);
-            Flash::add("success", "We sent you a new link.");
+            if ($this->sendVerification($user)) {
+                Flash::add("success", "We sent you a new link.");
+            } else {
+                Flash::add("danger", self::MAIL_FAILED);
+            }
         }
         Response::redirect("/check-inbox");
     }
 
-    private function sendVerification(array $user): void
+    private function sendVerification(array $user): bool
     {
         $raw = User::createToken((int) $user["id"], "verify", 1440);
         $link = absolute_url("/verify-email?token=" . $raw);
-        MailService::send(
-            $user["email"],
-            "Verify your Ncircle account",
-            "Hi {$user["name"]},\n\nOpen this link to activate your Ncircle account:\n{$link}\n\nIt works for 24 hours."
-        );
-        Session::set("resend_at", time() + self::RESEND_SECONDS);
+        $sent = MailService::sendAction($user["email"], "Verify your Ncircle account", [
+            "name" => $user["name"],
+            "title" => "Verify your email",
+            "intro" => "Welcome to Ncircle! Confirm your university email to activate your account.",
+            "button" => "Verify my email",
+            "link" => $link,
+            "note" => "This link works for 24 hours.",
+        ]);
+        Session::set("verify_mail_failed", !$sent);
+        Session::set("resend_at", $sent ? time() + self::RESEND_SECONDS : 0);
         Session::set("dev_verify_link", $link);
+        return $sent;
     }
 
     public function verify(): void
@@ -161,6 +173,7 @@ class AuthController extends Controller
         User::deleteTokens($userId, "verify");
         Session::forget("pending_user_id");
         Session::forget("dev_verify_link");
+        Session::forget("verify_mail_failed");
         Flash::add("success", "Email verified. You can sign in now.");
         Response::redirect("/login");
     }
@@ -180,11 +193,14 @@ class AuthController extends Controller
         if ($user !== null && $user["status"] === "active") {
             $raw = User::createToken((int) $user["id"], "reset", 60);
             $link = absolute_url("/reset-password?token=" . $raw);
-            MailService::send(
-                $user["email"],
-                "Reset your Ncircle password",
-                "Hi {$user["name"]},\n\nOpen this link to choose a new password:\n{$link}\n\nIt works for 1 hour. If this was not you, ignore this email."
-            );
+            MailService::sendAction($user["email"], "Reset your Ncircle password", [
+                "name" => $user["name"],
+                "title" => "Reset your password",
+                "intro" => "Use the link below to choose a new password for your Ncircle account.",
+                "button" => "Choose a new password",
+                "link" => $link,
+                "note" => "This link works for 1 hour. Your password stays the same until you use it.",
+            ]);
             Session::flash("dev_reset_link", $link);
         }
         // Same message either way, so this form cannot be used to discover accounts.

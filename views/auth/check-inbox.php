@@ -9,8 +9,13 @@ ob_start();
 
 <div class="sc-inbox">
     <span class="sc-inbox__icon"><i class="bi bi-envelope-check" aria-hidden="true"></i></span>
-    <h2 class="sc-inbox__title">Verification link sent!</h2>
-    <p class="sc-inbox__text">We sent an activation link to <strong><?= e($email) ?></strong>.</p>
+    <?php if ($sent): ?>
+        <h2 class="sc-inbox__title">Verification link sent!</h2>
+        <p class="sc-inbox__text">We sent an activation link to <strong><?= e($email) ?></strong>.</p>
+    <?php else: ?>
+        <h2 class="sc-inbox__title">Link not sent yet</h2>
+        <p class="sc-inbox__text">Your account is saved. Use Resend to get an activation link at <strong><?= e($email) ?></strong>.</p>
+    <?php endif; ?>
 
     <form method="post" action="<?= e(url("/verify-email/resend")) ?>" class="sc-inbox__resend" data-resend-wait="<?= (int) $wait ?>">
         <?= csrf_field() ?>
