@@ -21,7 +21,12 @@
         r.setAttribute("data-bs-theme", theme);
     })(document.documentElement);
 </script>
-<link rel="icon" href="<?= e(asset("img/logo.png")) ?>">
+<link rel="icon" href="<?= e(asset("img/favicons/favicon.ico")) ?>" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= e(asset("img/favicons/favicon-32x32.png")) ?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= e(asset("img/favicons/favicon-16x16.png")) ?>">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= e(asset("img/favicons/apple-touch-icon.png")) ?>">
+<link rel="manifest" href="<?= e(asset("img/favicons/site.webmanifest")) ?>">
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="<?= e(asset("vendor/bootstrap/bootstrap.min.css")) ?>">
 <link rel="stylesheet" href="<?= e(asset("vendor/bootstrap-icons/font/bootstrap-icons.min.css")) ?>">
 <link rel="stylesheet" href="<?= e(asset("css/theme.css")) ?>">

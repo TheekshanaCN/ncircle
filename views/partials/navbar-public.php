@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg sc-nav" aria-label="Main navigation">
             <a class="sc-nav__brand" href="<?= url("/") ?>">
-                <img src="<?= asset("img/logo.png") ?>" alt="Ncircle">
+                <img src="<?= asset("img/logo.svg") ?>" alt="Ncircle">
             </a>
 
             <button class="navbar-toggler" type="button"

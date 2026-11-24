@@ -50,7 +50,7 @@ html { scroll-behavior: smooth; }
 }
 
 .sc-nav__brand { display: inline-flex; align-items: center; margin-right: 1rem; }
-.sc-nav__brand img { display: block; height: 56px; width: auto; }
+.sc-nav__brand img { display: block; height: 39px; width: auto; }
 
 .sc-nav .navbar-toggler { border: 0; box-shadow: none; padding: 0.25rem; }
 .sc-nav .navbar-toggler:focus-visible { outline: 2px solid var(--sc-heading); outline-offset: 2px; }
@@ -98,7 +98,7 @@ html { scroll-behavior: smooth; }
 }
 .sc-footer__brand { grid-column: span 2; }
 
-.sc-footer__logo { display: block; height: 90px; width: auto; }
+.sc-footer__logo { display: block; height: 62px; width: auto; }
 .sc-footer__about {
   max-width: 384px;
   margin: 0.75rem 0;
@@ -238,9 +238,9 @@ html { scroll-behavior: smooth; }
 }
 .sc-auth__card--wide { max-width: 36rem; padding-block: 1.5rem; }
 .sc-auth__logo { display: block; width: fit-content; margin: 0 auto 1rem; }
-.sc-auth__logo img { display: block; height: 72px; width: auto; }
+.sc-auth__logo img { display: block; height: 50px; width: auto; }
 .sc-auth__card--wide .sc-auth__logo { padding-bottom: 0; margin-bottom: 0.75rem; }
-.sc-auth__card--wide .sc-auth__logo img { height: 58px; }
+.sc-auth__card--wide .sc-auth__logo img { height: 40px; }
 
 .sc-auth__title { margin: 0; font-size: 2rem; line-height: 1.15; letter-spacing: -0.02em; }
 .sc-auth__sub { margin: 0.125rem 0 1.5rem; color: var(--sc-text-muted); font-size: 0.9375rem; }
@@ -361,7 +361,7 @@ html { scroll-behavior: smooth; }
 
 .sc-sidebar__brand { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0 0.5rem 0 0.75rem; margin-bottom: 1.25rem; }
 .sc-sidebar__logo { display: block; overflow: hidden; flex-shrink: 0; }
-.sc-sidebar__brand img { display: block; height: 53px; width: auto; max-width: none; }
+.sc-sidebar__brand img { display: block; height: 37px; width: auto; max-width: none; }
 .sc-sidebar__toggle { display: inline-grid; flex-shrink: 0; place-items: center; width: 2rem; height: 2rem; padding: 0; border: 1px solid var(--sc-border); border-radius: 10px; background: var(--sc-surface); color: var(--sc-text-muted); }
 .sc-sidebar__toggle:hover { background: var(--sc-offwhite); color: var(--sc-heading); }
 .sc-sidebar__toggle:focus-visible { outline: 2px solid var(--sc-heading); outline-offset: 2px; }

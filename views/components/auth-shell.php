@@ -19,7 +19,7 @@ $imageSize = $imageSize ?? [900, 800];
     </aside>
     <section class="sc-auth__panel">
         <div class="sc-auth__card<?= $wide ? " sc-auth__card--wide" : "" ?>">
-            <a class="sc-auth__logo" href="<?= e(url("/")) ?>"><img src="<?= e(asset("img/logo.png")) ?>" alt="Ncircle home"></a>
+            <a class="sc-auth__logo" href="<?= e(url("/")) ?>"><img src="<?= e(asset("img/logo.svg")) ?>" alt="Ncircle home"></a>
             <?= $form ?>
         </div>
     </section>

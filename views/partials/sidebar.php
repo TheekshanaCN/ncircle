@@ -42,7 +42,7 @@ $isActive = fn (string $href): bool => $href === "/admin" ? current_path() === "
 <aside class="sc-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="scSidebar" aria-label="Main menu">
     <div class="sc-sidebar__inner">
         <div class="sc-sidebar__brand">
-            <a class="sc-sidebar__logo" href="<?= e(url($isAdminMode ? "/admin" : "/dashboard")) ?>"><img src="<?= e(asset("img/logo.png")) ?>" alt="Ncircle home"></a>
+            <a class="sc-sidebar__logo" href="<?= e(url($isAdminMode ? "/admin" : "/dashboard")) ?>"><img src="<?= e(asset("img/logo.svg")) ?>" alt="Ncircle home"></a>
             <button type="button" class="sc-sidebar__toggle" data-sidebar-toggle aria-label="Collapse menu" aria-expanded="true"><i class="bi bi-layout-sidebar" aria-hidden="true"></i></button>
             <button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#scSidebar" aria-label="Close menu"></button>
         </div>

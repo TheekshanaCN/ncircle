@@ -24,30 +24,26 @@
     .sc-reveal { opacity: 0; transform: translateY(16px); }
     .sc-reveal.is-in { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--reveal-i, 0) * 60ms); }
 
-    /* Buttons */
-    .btn { transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(29, 57, 52, 0.18); }
-    .btn:active { transform: scale(0.97); box-shadow: none; }
+    /* Buttons: quick color fade on hover, a slight press on click. No lifting or spinning. */
+    .btn {
+        transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+    .btn:active:not(:disabled):not(.disabled) { transform: scale(0.98); transition-duration: 0.05s; }
     .btn .bi { display: inline-block; transition: transform 0.2s ease; }
-    .btn:hover .bi-arrow-right, .btn:hover .bi-box-arrow-in-right { transform: translateX(3px); }
-    .btn:hover .bi-arrow-left { transform: translateX(-3px); }
-    .btn:hover .bi-plus-lg, .btn:hover .bi-plus-circle { transform: rotate(90deg); }
-    .btn:hover .bi-download, .btn:hover .bi-upload { transform: translateY(-1px) scale(1.1); }
+    .btn:hover .bi-arrow-right, .btn:hover .bi-box-arrow-in-right { transform: translateX(2px); }
+    .btn:hover .bi-arrow-left { transform: translateX(-2px); }
 
     /* Round icon buttons */
-    .sc-round-btn { transition: transform 0.15s ease, background-color 0.15s ease; }
-    .sc-round-btn:hover { transform: translateY(-1px) scale(1.06); }
-    .sc-round-btn:active { transform: scale(0.92); }
-    .sc-round-btn:hover .bi-bell { animation: sc-ring 0.6s ease; transform-origin: top center; }
-    .sc-round-btn:hover .bi-sliders { display: inline-block; transform: rotate(90deg); transition: transform 0.25s ease; }
+    .sc-round-btn { transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease; }
+    .sc-round-btn:active { transform: scale(0.95); transition-duration: 0.05s; }
     .sc-round-btn__dot { animation: sc-pulse 1.8s ease-out infinite; }
 
     /* Cards lift a little */
     .sc-note-card, .sc-pod, .sc-stat-tile, .sc-thread, .sc-note-row, .sc-card--outlined { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
     .sc-note-card:hover, .sc-pod:hover, .sc-stat-tile:hover, .sc-thread:hover, .sc-card--outlined:hover { transform: translateY(-3px); box-shadow: var(--sc-shadow-card); border-color: var(--sc-teal-border); }
     .sc-note-row:hover { transform: translateX(3px); border-color: var(--sc-teal-border); }
-    .sc-note-row__download { transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease; }
-    .sc-note-row__download:hover { transform: scale(1.12); }
+    .sc-note-row__download { transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease; }
+    .sc-note-row__download:active { transform: scale(0.95); }
     .dash-mastery__pill { transition: transform 0.15s ease, border-color 0.15s ease; }
     .dash-mastery__pill:hover { transform: translateY(-2px); border-color: var(--sc-heading); color: var(--sc-ink); }
 
@@ -123,7 +119,6 @@
 @keyframes sc-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes sc-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
 @keyframes sc-drift { from { translate: 0 0; } to { translate: 2.5rem 1.5rem; } }
-@keyframes sc-ring { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(14deg); } 50% { transform: rotate(-10deg); } 75% { transform: rotate(6deg); } }
 @keyframes sc-stripes { from { background-position: 0 0; } to { background-position: 200px 0; } }
 @keyframes sc-drop-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 @keyframes sc-slide-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }

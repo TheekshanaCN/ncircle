@@ -3,9 +3,7 @@
         <div class="sc-footer__grid">
 
             <div class="sc-footer__brand">
-                <img class="sc-footer__logo" src="<?= asset(
-                    "img/logo.png",
-                ) ?>" alt="Ncircle">
+                <img class="sc-footer__logo" src="<?= asset("img/logo.svg") ?>" alt="Ncircle">
                 <p class="sc-footer__about">
                     The authoritative academic exchange and peer-learning platform designed for
                     undergraduates across all faculties at NSBM Green University, Sri Lanka.

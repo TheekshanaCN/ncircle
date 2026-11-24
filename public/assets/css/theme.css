@@ -387,15 +387,6 @@ html[data-theme="dark"] .dropdown-menu {
     --bs-dropdown-link-hover-color: var(--sc-text);
 }
 
-/* The logo has black and teal artwork, so it sits on a small white plate */
-html[data-theme="dark"] .sc-nav__brand img,
-html[data-theme="dark"] .sc-sidebar__logo img,
-html[data-theme="dark"] .sc-footer__logo,
-html[data-theme="dark"] .sc-auth__logo img {
-    border-radius: 12px;
-    background: var(--sc-white);
-}
-
 /* These illustrations are drawn for a white background, so they keep one */
 html[data-theme="dark"] .dash-hero__card,
 html[data-theme="dark"] .sc-feature__media {
