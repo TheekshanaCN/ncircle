@@ -17,7 +17,7 @@ Stack: HTML, CSS, JavaScript, PHP, MySQL (plain PHP, MVC-lite, no framework), Bo
 
 For GIFs, add a free key from developers.giphy.com to `.env` as `GIPHY_API_KEY`. Without one, the GIF button is hidden.
 
-Emails go to `storage/logs/mail.log` while `MAIL_DRIVER=log`. With `APP_DEBUG=true`, the check-inbox and forgot-password pages also show the link directly.
+Emails go to `storage/logs/mail.log` while `MAIL_DRIVER=log`. With `APP_DEBUG=true`, the check-inbox and forgot-password pages also show the link directly. To send real emails, set `MAIL_DRIVER=resend`, `RESEND_API_KEY`, `MAIL_FROM_ADDRESS` and `MAIL_FROM_NAME`.
 
 ## Updating an existing database
 Run new files from `database/migrations/` once, in date order. They keep your existing data. Back up first:
@@ -28,7 +28,7 @@ mysql -u <user> -p <database> < database/migrations/2026-11-06-faculty-members-m
 
 ## Going live
 - Set `APP_DEBUG=false` and the real `APP_URL`. This hides error details and turns off `/dev/styleguide`.
-- Set `MAIL_DRIVER=mail` and make sure the server can send email, or new students cannot verify.
+- Set `MAIL_DRIVER=resend` with a key, and verify the from address's domain at resend.com, or new students cannot verify.
 - Serve over HTTPS, and only expose `public/` as the document root.
 - Remove the demo accounts.
 
@@ -41,7 +41,7 @@ mysql -u <user> -p <database> < database/migrations/2026-11-06-faculty-members-m
 ## Tests
 The end-to-end test creates throwaway accounts and content, so always run it against a separate test database, never your real one. Create one, import `schema.sql` and `seed.sql` into it, then:
 ```
-DB_NAME=ncircle_test php -d upload_max_filesize=10M -d post_max_size=22M -S 127.0.0.1:8770 -t public public/index.php
+MAIL_DRIVER=log DB_NAME=ncircle_test php -d upload_max_filesize=10M -d post_max_size=22M -S 127.0.0.1:8770 -t public public/index.php
 php tests/smoke.php http://127.0.0.1:8770
 ```
 Values set on the command line override `.env`. The test expects fresh seed data, so re-import the test database before each run.

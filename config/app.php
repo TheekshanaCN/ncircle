@@ -27,7 +27,12 @@ return [
         'base' => env_value('GIPHY_API_BASE', 'https://api.giphy.com/v1'),
     ],
     'mail' => [
-        'driver' => env_value('MAIL_DRIVER', 'log'), // log | mail
-        'from'   => env_value('MAIL_FROM', 'no-reply@ncircle.local'),
+        'driver' => env_value('MAIL_DRIVER', 'log'), // log | resend | mail
+        'from_address' => env_value('MAIL_FROM_ADDRESS', 'no-reply@ncircle.local'),
+        'from_name'    => env_value('MAIL_FROM_NAME', 'NCircle'),
+        'resend' => [
+            'key'  => env_value('RESEND_API_KEY', ''),
+            'base' => env_value('RESEND_API_BASE', 'https://api.resend.com'),
+        ],
     ],
 ];
