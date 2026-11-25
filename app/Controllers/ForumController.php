@@ -42,19 +42,28 @@ class ForumController extends Controller
             "title" => "Ask a question | Ncircle",
             "pageCss" => "forum",
             "subjects" => Subject::options(Auth::facultyScope()),
+            "question" => null,
         ], "app");
     }
 
-    public function store(): void
+    /** $currentSubject stays allowed when editing, even if it was switched off later. */
+    private function validatedQuestion(int $currentSubject = 0): array
     {
         $data = $this->validate([
             "title" => "required|min:10|max:200",
             "subject_id" => "required|int",
             "body" => "required|min:10|max:5000",
         ], ["subject_id" => "Subject", "body" => "Details"]);
-        if (!Subject::isActive((int) $data["subject_id"], Auth::facultyScope())) {
+        $subjectId = (int) $data["subject_id"];
+        if ($subjectId !== $currentSubject && !Subject::isActive($subjectId, Auth::facultyScope())) {
             $this->failValidation(["subject_id" => "Choose a valid subject."], $data);
         }
+        return $data;
+    }
+
+    public function store(): void
+    {
+        $data = $this->validatedQuestion();
         $media = $this->prepareMedia($data);
         $id = Question::create(Auth::id(), (int) $data["subject_id"], $data["title"], $data["body"]);
         AttachmentService::save("question", $id, Auth::id(), $media);
@@ -85,6 +94,36 @@ class ForumController extends Controller
         ], "app");
     }
 
+    /** Only the person who asked can edit the question. */
+    private function loadOwnQuestion(int $id): array
+    {
+        $question = $this->loadVisible($id);
+        if ((int) $question["user_id"] !== Auth::id()) {
+            Response::error(403);
+        }
+        return $question;
+    }
+
+    public function edit(int $id): void
+    {
+        $question = $this->loadOwnQuestion($id);
+        $this->view("forum/create", [
+            "title" => "Edit question | Ncircle",
+            "pageCss" => "forum",
+            "subjects" => Subject::optionsWith($question, Auth::facultyScope()),
+            "question" => $question,
+        ], "app");
+    }
+
+    public function update(int $id): void
+    {
+        $question = $this->loadOwnQuestion($id);
+        $data = $this->validatedQuestion((int) $question["subject_id"]);
+        Question::update($id, (int) $data["subject_id"], $data["title"], $data["body"]);
+        Flash::add("success", "Question updated.");
+        Response::redirect("/forum/" . $id);
+    }
+
     public function destroy(int $id): void
     {
         $user = Auth::user();
@@ -113,6 +152,43 @@ class ForumController extends Controller
         AttachmentService::save("answer", $answerId, (int) $user["id"], $media);
         NotificationService::questionAnswered($question, (int) $user["id"], $user["name"]);
         Response::redirect("/forum/" . $id . "#answers");
+    }
+
+    /** Only its author can edit an answer, and not after a moderator hides it. */
+    private function loadOwnAnswer(int $id): array
+    {
+        $answer = $this->orNotFound(Answer::find($id));
+        $this->loadVisible((int) $answer["question_id"]);
+        if ($answer["is_hidden"]) {
+            Response::error(404);
+        }
+        if ((int) $answer["user_id"] !== Auth::id()) {
+            Response::error(403);
+        }
+        return $answer;
+    }
+
+    public function editAnswer(int $id): void
+    {
+        $answer = $this->loadOwnAnswer($id);
+        $this->view("forum/edit-answer", [
+            "title" => "Edit answer | Ncircle",
+            "pageCss" => "forum",
+            "answer" => $answer,
+        ], "app");
+    }
+
+    public function updateAnswer(int $id): void
+    {
+        $answer = $this->loadOwnAnswer($id);
+        $data = $this->validate(["body" => "max:5000"], ["body" => "Answer"]);
+        $body = (string) ($data["body"] ?? "");
+        if ($body === "" && !Attachment::forOwners("answer", [$id])) {
+            $this->failValidation(["body" => "Write an answer."], $data);
+        }
+        Answer::update($id, $body);
+        Flash::add("success", "Answer updated.");
+        Response::redirect("/forum/" . $answer["question_id"] . "#answer-" . $id);
     }
 
     /** Its author or an admin can delete an answer. */

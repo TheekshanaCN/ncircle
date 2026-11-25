@@ -21,6 +21,12 @@ class Subject
         return $options;
     }
 
+    /** The same list plus the row's own subject, so an edit form always shows it. */
+    public static function optionsWith(array $row, ?string $faculty = null): array
+    {
+        return self::options($faculty) + [$row['subject_id'] => $row['subject'] . ' ' . $row['subject_name']];
+    }
+
     public static function isActive(int $id, ?string $faculty = null): bool
     {
         if ($faculty !== null) {

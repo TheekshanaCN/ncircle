@@ -25,6 +25,11 @@ class Answer
         return Database::insert('INSERT INTO answers (question_id, user_id, body) VALUES (?, ?, ?)', [$questionId, $userId, $body]);
     }
 
+    public static function update(int $id, string $body): void
+    {
+        Database::run('UPDATE answers SET body = ? WHERE id = ?', [$body, $id]);
+    }
+
     /** Only one accepted answer per question. */
     public static function accept(array $answer): void
     {

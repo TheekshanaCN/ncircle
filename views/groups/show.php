@@ -13,6 +13,7 @@ $isFull = (int) $group["members_count"] >= (int) $group["max_members"];
         <p class="sc-post__text"><?= e($group["description"]) ?></p>
     </div>
     <div class="group-hero__actions">
+        <?php if ($isOwner): ?><?= component("button", ["label" => "Edit group", "icon" => "pencil", "variant" => "outline", "size" => "sm", "href" => url("/groups/" . $id . "/edit"), "class" => "sc-btn-quiet"]) ?><?php endif; ?>
         <?php if ($isOwner || $isAdmin): ?>
             <?= component("button", ["label" => "Delete group", "icon" => "trash", "variant" => "outline", "size" => "sm", "class" => "sc-btn-quiet sc-btn-danger-text", "attrs" => ["data-bs-toggle" => "modal", "data-bs-target" => "#deleteGroup"]]) ?>
         <?php endif; ?>
@@ -42,7 +43,7 @@ $isFull = (int) $group["members_count"] >= (int) $group["max_members"];
                 </form>
                 <?php foreach ($posts as $post): ?>
                     <div class="sc-post">
-                        <?= component("avatar", ["name" => $post["author"], "size" => "sm"]) ?>
+                        <?= component("avatar", ["name" => $post["author"], "photo" => avatar_url($post["user_id"], $post["avatar"]), "size" => "sm"]) ?>
                         <div class="sc-post__body">
                             <div class="sc-post__meta">
                                 <strong><?= e($post["author"]) ?></strong> <span><?= e(time_ago($post["created_at"])) ?></span>
@@ -95,7 +96,7 @@ $isFull = (int) $group["members_count"] >= (int) $group["max_members"];
             <ul class="sc-member-list">
                 <?php foreach ($members as $member): ?>
                     <li>
-                        <?= component("avatar", ["name" => $member["name"], "size" => "sm"]) ?>
+                        <?= component("avatar", ["name" => $member["name"], "photo" => avatar_url($member["id"], $member["avatar"]), "size" => "sm"]) ?>
                         <a href="<?= e(url("/profile/" . (int) $member["id"])) ?>"><?= e($member["name"]) ?></a>
                         <?php if ((int) $member["id"] === (int) $group["owner_id"]): ?><span class="sc-state sc-state--muted">OWNER</span><?php endif; ?>
                     </li>

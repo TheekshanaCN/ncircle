@@ -4,6 +4,22 @@
  */
 class Response
 {
+    /** Sent with every page. File downloads replace the policy with a stricter one. */
+    public static function securityHeaders(): void
+    {
+        header_remove('X-Powered-By');
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: DENY');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+        header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'nonce-" . csp_nonce() . "'; "
+            . "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.giphy.com; "
+            . "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+            header('Strict-Transport-Security: max-age=31536000');
+        }
+    }
+
     public static function redirect(string $path): void
     {
         header('Location: ' . url($path), true, 302);

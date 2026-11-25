@@ -114,3 +114,16 @@
     font-size: var(--sc-fs-xs);
     color: var(--sc-text-muted);
 }
+
+/* ---------- Profile photo (settings) ---------- */
+.profile-photo {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+.profile-photo__main {
+    flex: 1;
+    min-width: 0;
+    max-width: 32rem;
+}

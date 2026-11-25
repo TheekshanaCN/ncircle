@@ -26,7 +26,7 @@ $faculties = $request["faculties"] ?: [];
     </div>
     <?php if (!empty($request["skills"])): ?><?= component("skill-list", ["skills" => $request["skills"]]) ?><?php endif; ?>
     <div class="sc-thread__foot sc-request__foot">
-        <?= component("avatar", ["name" => $request["author"], "size" => "sm"]) ?>
+        <?= component("avatar", ["name" => $request["author"], "photo" => avatar_url($request["user_id"] ?? 0, $request["author_avatar"] ?? null), "size" => "sm"]) ?>
         <span class="sc-thread__meta"><?= e($request["author"]) ?> &middot; <?= e($request["author_faculty"]) ?></span>
         <strong class="sc-thread__count"><?= $count ?> <?= $count === 1 ? "response" : "responses" ?></strong>
     </div>

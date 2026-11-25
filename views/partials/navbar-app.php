@@ -22,7 +22,7 @@ $unread = Notification::unreadCount((int) $user["id"]);
             <a class="sc-round-btn" href="<?= e(url("/profile/edit")) ?>" aria-label="Settings"><i class="bi bi-sliders" aria-hidden="true"></i></a>
             <span class="sc-topbar__divider" aria-hidden="true"></span>
             <a class="sc-topbar__profile" href="<?= e(url("/profile")) ?>">
-                <?= component("avatar", ["name" => $user["name"], "tone" => "teal", "ring" => true]) ?>
+                <?= component("avatar", ["name" => $user["name"], "photo" => avatar_url($user["id"], $user["avatar"]), "tone" => "teal", "ring" => true]) ?>
                 <span class="sc-topbar__who">
                     <strong><?= e($user["name"]) ?></strong>
                     <small><?= e($user["username"]) ?> | <?= e($user["student_id"]) ?></small>

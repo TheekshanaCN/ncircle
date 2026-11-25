@@ -14,7 +14,7 @@ $saved = !empty($resource["is_bookmarked"]);
 ?>
 <article class="sc-note-card">
     <header class="sc-note-card__head">
-        <?= component("avatar", ["name" => $resource["uploader"], "tone" => "teal"]) ?>
+        <?= component("avatar", ["name" => $resource["uploader"], "photo" => avatar_url($resource["user_id"], $resource["uploader_avatar"] ?? null), "tone" => "teal"]) ?>
         <p class="sc-note-card__who">
             <a href="<?= e(url("/profile/" . (int) $resource["user_id"])) ?>"><?= e($resource["uploader"]) ?></a>
             <span>@<?= e($resource["uploader_username"]) ?> &middot; <?= e(time_ago($resource["created_at"])) ?></span>

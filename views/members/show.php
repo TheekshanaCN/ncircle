@@ -29,7 +29,7 @@ $isOpen = $request["status"] === "open";
             </div>
             <?php if (!empty($request["skills"])): ?><?= component("skill-list", ["skills" => $request["skills"]]) ?><?php endif; ?>
             <div class="thread-foot mt-3">
-                <?= component("avatar", ["name" => $request["author"], "size" => "sm"]) ?>
+                <?= component("avatar", ["name" => $request["author"], "photo" => avatar_url($request["user_id"] ?? 0, $request["author_avatar"] ?? null), "size" => "sm"]) ?>
                 <a href="<?= e(url("/profile/" . (int) $request["user_id"])) ?>"><?= e($request["author"]) ?></a> <span class="sc-thread__meta">&middot; <?= e($request["author_faculty"]) ?></span>
                 <div class="thread-foot__actions">
                     <?php if ($isOwner && $isOpen): ?>
@@ -49,7 +49,7 @@ $isOpen = $request["status"] === "open";
                 <h2 class="sc-panel__title" id="responses-title">Responses (<?= count($responses) ?>)</h2>
                 <?php foreach ($responses as $response): ?>
                     <div class="sc-post">
-                        <?= component("avatar", ["name" => $response["name"], "size" => "sm"]) ?>
+                        <?= component("avatar", ["name" => $response["name"], "photo" => avatar_url($response["user_id"], $response["avatar"]), "size" => "sm"]) ?>
                         <div class="sc-post__body">
                             <p class="sc-post__meta"><a href="<?= e(url("/profile/" . (int) $response["user_id"])) ?>"><strong><?= e($response["name"]) ?></strong></a> <span><?= e($response["faculty"]) ?> &middot; Year <?= (int) $response["academic_year"] ?> &middot; <?= e(time_ago($response["created_at"])) ?></span></p>
                             <p class="sc-post__text"><?= nl2br(e($response["message"])) ?></p>

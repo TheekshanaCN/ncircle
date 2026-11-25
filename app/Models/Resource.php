@@ -2,7 +2,7 @@
 /** app/Models/Resource.php  -  study notes: listing, filters and review */
 class Resource
 {
-    private const SELECT = "SELECT r.*, u.name AS uploader, u.username AS uploader_username, u.id AS uploader_id,
+    private const SELECT = "SELECT r.*, u.name AS uploader, u.avatar AS uploader_avatar, u.username AS uploader_username, u.id AS uploader_id,
             s.code AS subject, s.name AS subject_name, s.year AS subject_year, s.faculty AS subject_faculty,
             c.name AS category, c.slug AS category_slug,
             COALESCE(rt.rating, 0) AS rating, COALESCE(rt.rating_count, 0) AS rating_count,
@@ -113,6 +113,17 @@ class Resource
                 $d['user_id'], $d['subject_id'], $d['category_id'], $d['title'], $d['description'],
                 $d['file_path'], $d['original_name'], $d['file_type'], $d['file_size'], $d['pages'],
             ]
+        );
+    }
+
+    /** Saves the details and sends the note back to the approval queue. The file stays the same. */
+    public static function update(int $id, array $d): void
+    {
+        Database::run(
+            "UPDATE resources SET subject_id = ?, category_id = ?, title = ?, description = ?, pages = ?,
+                    status = 'pending', reject_reason = NULL, reviewed_by = NULL, reviewed_at = NULL
+             WHERE id = ?",
+            [(int) $d['subject_id'], (int) $d['category_id'], $d['title'], $d['description'], $d['pages'], $id]
         );
     }
 

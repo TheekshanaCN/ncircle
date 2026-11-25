@@ -74,7 +74,7 @@ $isActive = fn (string $href): bool => $href === "/admin" ? current_path() === "
             <a class="sc-sidebar__link sc-sidebar__link--sm<?= is_path("/help") ? " is-active" : "" ?>" href="<?= e(url("/help")) ?>" data-sc-tip="Help Center"><i class="bi bi-question-circle" aria-hidden="true"></i><span class="sc-sidebar__label">Help Center</span></a>
 
             <div class="sc-user-widget">
-                <?= component("avatar", ["name" => $user["name"], "tone" => "teal"]) ?>
+                <?= component("avatar", ["name" => $user["name"], "photo" => avatar_url($user["id"], $user["avatar"]), "tone" => "teal"]) ?>
                 <a class="sc-user-widget__text" href="<?= e(url("/profile")) ?>">
                     <strong><?= e($user["name"]) ?></strong>
                     <small>@<?= e($user["student_id"]) ?> &middot; <?= e($user["faculty"]) ?></small>

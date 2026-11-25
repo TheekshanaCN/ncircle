@@ -1,20 +1,27 @@
-<?php /** views/resources/create.php  -  upload a note */ ?>
+<?php
+/** views/resources/create.php  -  upload or edit a note. $resource is null when uploading. */
+$editing = $resource !== null;
+$value = fn (string $key) => old($key, $editing ? ($resource[$key] ?? "") : "");
+?>
 <?= component("page-header", [
-    "title" => "Share a note",
-    "subtitle" => "An admin reviews every upload before it goes live for the campus circle.",
-    "actions" => component("button", ["label" => "Back to notes", "icon" => "arrow-left", "variant" => "outline", "size" => "sm", "href" => url("/resources"), "class" => "sc-btn-quiet"]),
+    "title" => $editing ? "Edit note" : "Share a note",
+    "subtitle" => $editing ? "Your note is hidden from others until an admin approves the changes." : "An admin reviews every upload before it goes live for the campus circle.",
+    "actions" => component("button", ["label" => $editing ? "Back to note" : "Back to notes", "icon" => "arrow-left", "variant" => "outline", "size" => "sm", "href" => url($editing ? "/resources/" . (int) $resource["id"] : "/resources"), "class" => "sc-btn-quiet"]),
 ]) ?>
 
 <div class="sc-form-layout">
-    <form class="sc-panel" method="post" action="<?= e(url("/resources")) ?>" enctype="multipart/form-data">
+    <form class="sc-panel" method="post" action="<?= e(url($editing ? "/resources/" . (int) $resource["id"] . "/edit" : "/resources")) ?>" enctype="multipart/form-data">
         <?= csrf_field() ?>
-        <?= component("form-field", ["name" => "title", "label" => "Title", "placeholder" => "Normalization Cheat Sheet — Database Systems", "required" => true, "attrs" => ["maxlength" => 160]]) ?>
+        <?= component("form-field", ["name" => "title", "label" => "Title", "value" => $value("title"), "placeholder" => "Normalization Cheat Sheet — Database Systems", "required" => true, "attrs" => ["maxlength" => 160]]) ?>
         <div class="row g-3">
-            <div class="col-md-6"><?= component("form-field", ["name" => "subject_id", "label" => "Subject", "type" => "select", "placeholder" => "Choose a subject", "options" => $subjects, "required" => true]) ?></div>
-            <div class="col-md-6"><?= component("form-field", ["name" => "category_id", "label" => "Category", "type" => "select", "placeholder" => "Choose a category", "options" => $categories, "required" => true]) ?></div>
+            <div class="col-md-6"><?= component("form-field", ["name" => "subject_id", "label" => "Subject", "type" => "select", "placeholder" => "Choose a subject", "options" => $subjects, "value" => $value("subject_id"), "required" => true]) ?></div>
+            <div class="col-md-6"><?= component("form-field", ["name" => "category_id", "label" => "Category", "type" => "select", "placeholder" => "Choose a category", "options" => $categories, "value" => $value("category_id"), "required" => true]) ?></div>
         </div>
-        <?= component("form-field", ["name" => "description", "label" => "Description", "type" => "textarea", "rows" => 4, "placeholder" => "What is in this note? Mention lecture weeks and topics.", "required" => true, "attrs" => ["maxlength" => 2000]]) ?>
+        <?= component("form-field", ["name" => "description", "label" => "Description", "type" => "textarea", "rows" => 4, "value" => $value("description"), "placeholder" => "What is in this note? Mention lecture weeks and topics.", "required" => true, "attrs" => ["maxlength" => 2000]]) ?>
 
+        <?php if ($editing): ?>
+            <p class="sc-field__help">File: <?= e($resource["original_name"]) ?>. To change the file, delete this note and share a new one.</p>
+        <?php else: ?>
         <div class="sc-field">
             <label class="form-label" for="field-file">File <span class="sc-field__req" aria-hidden="true">*</span></label>
             <label class="sc-dropzone d-block" data-dropzone>
@@ -25,11 +32,12 @@
             </label>
             <?php if (field_error("file") !== ""): ?><div class="sc-field__error" id="field-file-error"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> <?= e(field_error("file")) ?></div><?php endif; ?>
         </div>
+        <?php endif; ?>
 
         <div class="row g-3">
-            <div class="col-md-6"><?= component("form-field", ["name" => "pages", "label" => "Pages (optional)", "type" => "number", "attrs" => ["min" => 1, "max" => 5000]]) ?></div>
+            <div class="col-md-6"><?= component("form-field", ["name" => "pages", "label" => "Pages (optional)", "type" => "number", "value" => $value("pages"), "attrs" => ["min" => 1, "max" => 5000]]) ?></div>
         </div>
-        <?= component("button", ["label" => "Submit for review", "type" => "submit", "variant" => "dark", "icon" => "upload"]) ?>
+        <?= component("button", ["label" => $editing ? "Save and submit for review" : "Submit for review", "type" => "submit", "variant" => "dark", "icon" => "upload"]) ?>
     </form>
 
     <aside class="sc-panel sc-panel--tight sc-side-note">

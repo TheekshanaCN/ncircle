@@ -5,7 +5,7 @@
  */
 class HelpRequest
 {
-    private const SELECT = "SELECT hr.*, u.name AS author, u.faculty AS author_faculty,
+    private const SELECT = "SELECT hr.*, u.name AS author, u.avatar AS author_avatar, u.faculty AS author_faculty,
             (SELECT COUNT(*) FROM help_request_responses r WHERE r.request_id = hr.id) AS responses_count
          FROM help_requests hr JOIN users u ON u.id = hr.user_id";
 
@@ -77,7 +77,7 @@ class HelpRequest
     public static function responses(int $requestId): array
     {
         return Database::all(
-            'SELECT r.*, u.name, u.faculty, u.academic_year, u.skills FROM help_request_responses r
+            'SELECT r.*, u.name, u.avatar, u.faculty, u.academic_year, u.skills FROM help_request_responses r
              JOIN users u ON u.id = r.user_id WHERE r.request_id = ? ORDER BY r.created_at',
             [$requestId]
         );

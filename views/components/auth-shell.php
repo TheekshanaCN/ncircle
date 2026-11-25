@@ -2,7 +2,7 @@
 /**
  * components/auth-shell.php  -  the Figma sign-in / sign-up split screen
  *   <?= component('auth-shell', [
- *         'image' => 'img/sign-in.png', 'imageAlt' => '…', 'imageSize' => [905, 836],
+ *         'image' => 'img/sign-in.webp', 'imageAlt' => '…', 'imageSize' => [905, 836],
  *         'headline' => $trustedHtml, 'lead' => '…', 'form' => $trustedHtml, 'reverse' => false, 'wide' => false]) ?>
  * reverse = true puts the card on the left (sign up).    wide = the bigger card for long forms.
  */

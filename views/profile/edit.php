@@ -4,6 +4,24 @@ $posted = old("name") !== "";   // after a failed save, ticked boxes come from t
 ?>
 <?= component("page-header", ["title" => "Settings", "subtitle" => "Your profile details and password."]) ?>
 
+<section class="sc-panel profile-photo" aria-labelledby="photo-title">
+    <?= component("avatar", ["name" => $user["name"], "photo" => avatar_url($user["id"], $user["avatar"]), "tone" => "teal", "size" => "lg"]) ?>
+    <div class="profile-photo__main">
+        <h2 class="sc-panel__title mb-3" id="photo-title">Profile photo</h2>
+        <form method="post" action="<?= e(url("/profile/photo")) ?>" enctype="multipart/form-data">
+            <?= csrf_field() ?>
+            <?= component("form-field", ["name" => "photo", "label" => "Choose a photo", "type" => "file", "required" => true, "help" => "JPG, PNG or WEBP, up to " . format_bytes(config("upload.avatars.max_size")) . ". Other students can see it.", "attrs" => ["accept" => ".jpg,.jpeg,.png,.webp", "data-photo-input" => true]]) ?>
+            <?= component("button", ["label" => "Save photo", "type" => "submit", "variant" => "dark", "size" => "sm"]) ?>
+        </form>
+        <?php if ($user["avatar"] !== null): ?>
+            <form method="post" action="<?= e(url("/profile/photo/delete")) ?>" data-confirm="Remove your profile photo?">
+                <?= csrf_field() ?>
+                <button class="sc-text-btn sc-text-btn--danger" type="submit"><i class="bi bi-trash" aria-hidden="true"></i> Remove photo</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</section>
+
 <div class="sc-form-layout sc-form-layout--even">
     <form class="sc-panel" method="post" action="<?= e(url("/profile/edit")) ?>">
         <?= csrf_field() ?>

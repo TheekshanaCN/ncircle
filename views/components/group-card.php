@@ -18,7 +18,7 @@ $extra = $members - count($group["preview"]);
     <p class="sc-group__text"><?= e($group["description"]) ?></p>
     <div class="sc-group__foot">
         <div class="sc-person-stack" aria-hidden="true">
-            <?php foreach ($group["preview"] as $name): ?><?= component("avatar", ["name" => $name, "size" => "sm"]) ?><?php endforeach; ?>
+            <?php foreach ($group["preview"] as $person): ?><?= component("avatar", ["name" => $person["name"], "photo" => avatar_url($person["id"], $person["avatar"]), "size" => "sm"]) ?><?php endforeach; ?>
             <?php if ($extra > 0): ?><span class="sc-person sc-person--grey sc-person--sm">+<?= $extra ?></span><?php endif; ?>
         </div>
         <span><?= $members ?>/<?= (int) $group["max_members"] ?> members</span>

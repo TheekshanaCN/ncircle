@@ -52,6 +52,41 @@ class ProfileController extends Controller
         Response::redirect("/profile/edit");
     }
 
+    public function updatePhoto(): void
+    {
+        $old = Auth::user()["avatar"];
+        $result = AvatarService::store($_FILES["photo"] ?? null);
+        if (isset($result["error"])) {
+            $this->failValidation(["photo" => $result["error"]], []);
+        }
+        User::setAvatar(Auth::id(), $result["stored"]);
+        AvatarService::delete($old);
+        Flash::add("success", "Photo updated.");
+        Response::redirect("/profile/edit");
+    }
+
+    public function deletePhoto(): void
+    {
+        $old = Auth::user()["avatar"];
+        User::setAvatar(Auth::id(), null);
+        AvatarService::delete($old);
+        Flash::add("success", "Photo removed.");
+        Response::redirect("/profile/edit");
+    }
+
+    public function photo(int $id): void
+    {
+        $stored = $this->orNotFound(User::find($id))["avatar"];
+        if ($stored === null || !is_file(AvatarService::path($stored))) {
+            Response::error(404);
+        }
+        header("Content-Type: " . AvatarService::mime($stored));
+        header("Content-Security-Policy: default-src 'none'; sandbox");
+        header("Cache-Control: private, max-age=86400");
+        header("Content-Length: " . filesize(AvatarService::path($stored)));
+        readfile(AvatarService::path($stored));
+    }
+
     public function updatePassword(): void
     {
         $this->validate([

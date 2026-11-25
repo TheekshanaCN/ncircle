@@ -720,6 +720,95 @@ check('wrong current password is refused', str_contains($new->follow()->body, 'n
 $new->post('/settings/password', ['current_password' => $password, 'password' => 'Fresh@1234', 'password_confirmation' => 'Fresh@1234'], '/profile/edit');
 check('password changes', str_contains($new->follow()->body, 'Password changed'));
 
+echo "Editing\n";
+$edit = ['title' => "Edited note {$xss}", 'subject_id' => '1', 'category_id' => '2', 'description' => 'Edited description long enough', 'pages' => '4'];
+$other->get("/resources/{$noteId}/edit");
+check('others cannot open the note editor', in_array($other->status, [403, 404], true), (string) $other->status);
+$other->post("/resources/{$noteId}/edit", $edit, '/dashboard');
+check('others cannot edit a note', in_array($other->status, [403, 404], true), (string) $other->status);
+clean($new, "/resources/{$noteId}/edit");
+check('note editor is filled in', str_contains($new->body, 'Smoke note') && !str_contains($new->body, 'name="file"'));
+$new->post("/resources/{$noteId}/edit", ['title' => 'x'] + $edit, "/resources/{$noteId}/edit");
+check('a bad note edit is refused', str_contains($new->follow()->body, 'sc-field__error'));
+$new->post("/resources/{$noteId}/edit", $edit, "/resources/{$noteId}/edit");
+$new->follow();
+check('note edit saves, escaped, and needs review', str_contains($new->body, 'Edited note &lt;script&gt;') && str_contains($new->body, 'waiting for approval'));
+$other->get("/resources/{$noteId}");
+check('an edited note is hidden until approved', $other->status === 404);
+$admin->post("/admin/approvals/{$noteId}/approve", [], '/admin/approvals');
+$other->get("/resources/{$noteId}");
+check('the edited note can be approved again', $other->status === 200 && str_contains($other->body, 'Edited note'));
+
+$new->post('/forum', ['title' => 'A question that will be edited', 'subject_id' => '1', 'body' => 'Original question details'], '/forum/create');
+preg_match('#/forum/(\d+)#', $new->location, $m);
+$editQ = (int) ($m[1] ?? 0);
+$editedQ = ['title' => "Edited question {$xss}", 'subject_id' => '1', 'body' => 'Edited question details'];
+clean($new, "/forum/{$editQ}/edit");
+$other->post("/forum/{$editQ}/edit", $editedQ, '/dashboard');
+check('others cannot edit a question', $other->status === 403, (string) $other->status);
+$admin->post("/forum/{$editQ}/edit", $editedQ, '/admin');
+check('admins cannot rewrite a question', $admin->status === 403, (string) $admin->status);
+$new->post("/forum/{$editQ}/edit", $editedQ, "/forum/{$editQ}/edit");
+check('question edit saves and is escaped', str_contains($new->follow()->body, 'Edited question &lt;script&gt;') && !str_contains($new->body, $xss));
+$other->post("/forum/{$editQ}/answers", ['body' => 'Original answer'], "/forum/{$editQ}");
+$other->get("/forum/{$editQ}");
+preg_match('#/answers/(\d+)/edit#', $other->body, $m);
+$editA = (int) ($m[1] ?? 0);
+clean($other, "/answers/{$editA}/edit");
+$new->post("/answers/{$editA}/edit", ['body' => 'Hijacked'], '/dashboard');
+check('others cannot edit an answer', $new->status === 403, (string) $new->status);
+$other->post("/answers/{$editA}/edit", ['body' => ''], "/answers/{$editA}/edit");
+check('an answer cannot be emptied', str_contains($other->follow()->body, 'Write an answer.'));
+$other->post("/answers/{$editA}/edit", ['body' => "Edited answer {$xss}"], "/answers/{$editA}/edit");
+check('answer edit saves and is escaped', str_contains($other->follow()->body, 'Edited answer &lt;script&gt;') && !str_contains($other->body, $xss));
+
+$new->post('/groups', ['name' => 'Editable group', 'subject_id' => '1', 'description' => 'A group that will be edited', 'max_members' => '5'], '/groups/create');
+preg_match('#/groups/(\d+)#', $new->location, $m);
+$editG = (int) ($m[1] ?? 0);
+$editedG = ['name' => "Edited group {$xss}", 'description' => 'An edited description', 'max_members' => '2'];
+foreach ([$other, $nimesh, $dinithi] as $c) { $c->post("/groups/{$editG}/join", [], '/groups'); }
+clean($new, "/groups/{$editG}/edit");
+$other->post("/groups/{$editG}/edit", $editedG, '/dashboard');
+check('others cannot edit a group', $other->status === 403, (string) $other->status);
+$new->post("/groups/{$editG}/edit", $editedG, "/groups/{$editG}/edit");
+check('limit below current members is refused', str_contains($new->follow()->body, 'already has more members'));
+$new->post("/groups/{$editG}/edit", ['max_members' => '9'] + $editedG, "/groups/{$editG}/edit");
+check('group edit saves and is escaped', str_contains($new->follow()->body, 'Edited group &lt;script&gt;') && !str_contains($new->body, $xss));
+
+echo "Profile photo\n";
+preg_match('#/profile/(\d+)#', $nimesh->get('/profile')->location, $m);
+$photoUser = (int) ($m[1] ?? 0);
+$upload = fn (string $path, string $name) => $nimesh->request('POST', '/profile/photo', ['_token' => $nimesh->token('/profile/edit'), 'photo' => new CURLFile($path, 'image/png', $name)], ['Referer: ' . $base . '/profile/edit']);
+$upload($fixture('photo-bad.png', '<?php echo 1;'), 'photo.png');
+check('a script is refused as a photo', str_contains($nimesh->follow()->body, 'sc-field__error'));
+$upload($fixture('photo-big.png', $png . str_repeat("\0", 3 * 1024 * 1024)), 'photo.png');
+check('an oversized photo is refused', str_contains($nimesh->follow()->body, 'must be smaller'));
+$nimesh->get("/profile/{$photoUser}/photo");
+check('no photo is a 404', $nimesh->status === 404);
+$upload($fixture('photo-ok.png', $png), 'photo.png');
+$nimesh->follow();
+check('a photo can be saved', str_contains($nimesh->body, 'Photo updated') && str_contains($nimesh->body, "/profile/{$photoUser}/photo?v="));
+$other->get("/profile/{$photoUser}/photo");
+check('other students can see it', $other->status === 200 && $other->body === $png);
+$guest->get("/profile/{$photoUser}/photo");
+check('guests cannot see it', $guest->status === 302);
+foreach (['/dashboard', '/groups/1', '/forum', '/resources', '/sessions', '/members', '/members/directory', "/profile/{$photoUser}"] as $p) {
+    clean($other, $p);
+}
+$nimesh->post('/profile/photo/delete', [], '/profile/edit');
+check('a photo can be removed', str_contains($nimesh->follow()->body, 'Photo removed') && !str_contains($nimesh->body, 'photo?v='));
+
+echo "Headers and meta tags\n";
+$head = $headers('/login');
+foreach (['Content-Security-Policy: default-src', 'X-Frame-Options: DENY', 'X-Content-Type-Options: nosniff', 'Referrer-Policy:', 'Permissions-Policy:'] as $h) {
+    check("header {$h}", stripos($head, $h) !== false);
+}
+$guest->get('/login?token=secret123');
+preg_match('#<meta property="og:url" content="([^"]+)"#', $guest->body, $m);
+check('link previews leave out the query string', isset($m[1]) && !str_contains($m[1], 'secret123'));
+check('pages have a description and preview image', str_contains($guest->body, '<meta name="description"') && str_contains($guest->body, 'property="og:image"'));
+check('inline script carries the nonce', (bool) preg_match('#<script nonce="[^"]{20,}"#', $guest->body));
+
 echo "Sign out, reset, remember me, throttle\n";
 $new->post('/logout', [], '/dashboard');
 $new->get('/dashboard');

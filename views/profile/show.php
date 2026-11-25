@@ -1,6 +1,6 @@
 <?php /** views/profile/show.php  -  a student's public profile */ ?>
 <header class="sc-panel group-hero">
-    <?= component("avatar", ["name" => $profile["name"], "tone" => "teal", "size" => "lg"]) ?>
+    <?= component("avatar", ["name" => $profile["name"], "photo" => avatar_url($profile["id"], $profile["avatar"]), "tone" => "teal", "size" => "lg"]) ?>
     <div class="group-hero__text">
         <h1 class="thread-title m-0"><?= e($profile["name"]) ?></h1>
         <p class="sc-group__subject">@<?= e($profile["username"]) ?> &middot; <?= e(config("app.faculties")[$profile["faculty"]] ?? $profile["faculty"]) ?> &middot; Year <?= (int) $profile["academic_year"] ?></p>

@@ -58,6 +58,7 @@ set_exception_handler(function (Throwable $e): void {
     Response::error(500, APP_DEBUG ? $e : null);
 });
 
+Response::securityHeaders();
 Session::start();
 Auth::restoreRemembered();
 

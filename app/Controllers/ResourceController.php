@@ -63,29 +63,13 @@ class ResourceController extends Controller
             "pageCss" => "resources",
             "subjects" => Subject::options(Auth::facultyScope()),
             "categories" => Category::options(),
+            "resource" => null,
         ], "app");
     }
 
     public function store(): void
     {
-        $data = $this->validate([
-            "title" => "required|min:5|max:160",
-            "subject_id" => "required|int",
-            "category_id" => "required|int",
-            "description" => "required|min:10|max:2000",
-            "pages" => "between:1,5000",
-        ], ["subject_id" => "Subject", "category_id" => "Category"]);
-
-        $errors = [];
-        if (!Subject::isActive((int) $data["subject_id"], Auth::facultyScope())) {
-            $errors["subject_id"] = "Choose a valid subject.";
-        }
-        if (!Category::exists((int) $data["category_id"])) {
-            $errors["category_id"] = "Choose a valid category.";
-        }
-        if ($errors) {
-            $this->failValidation($errors, $data);
-        }
+        $data = $this->validatedNote();
         $stored = UploadService::store($_FILES["file"] ?? null);
         if (isset($stored["error"])) {
             $this->failValidation(["file" => $stored["error"]], $data);
@@ -97,10 +81,70 @@ class ResourceController extends Controller
             "category_id" => (int) $data["category_id"],
             "title" => $data["title"],
             "description" => $data["description"],
-            "pages" => ($data["pages"] ?? "") !== "" ? (int) $data["pages"] : null,
+            "pages" => $data["pages"],
         ]));
         Flash::add("success", "Uploaded. An admin will review it soon.");
         Response::redirect("/resources/" . $id);
+    }
+
+    public function edit(int $id): void
+    {
+        $resource = $this->loadOwn($id);
+        $this->view("resources/create", [
+            "title" => "Edit note | Ncircle",
+            "pageCss" => "resources",
+            "subjects" => Subject::optionsWith($resource, Auth::facultyScope()),
+            "categories" => Category::options(),
+            "resource" => $resource,
+        ], "app");
+    }
+
+    /** Every edit goes back to review, so approved text cannot be swapped for something unchecked. */
+    public function update(int $id): void
+    {
+        $resource = $this->loadOwn($id);
+        Resource::update($id, $this->validatedNote((int) $resource["subject_id"]));
+        Flash::add("success", "Changes saved. An admin will review them soon.");
+        Response::redirect("/resources/" . $id);
+    }
+
+    private function loadOwn(int $id): array
+    {
+        $user = Auth::user();
+        $resource = $this->orNotFound(Resource::find($id));
+        if (!Resource::canView($resource, $user)) {
+            Response::error(404);
+        }
+        if ((int) $resource["user_id"] !== (int) $user["id"]) {
+            Response::error(403);
+        }
+        return $resource;
+    }
+
+    /** $currentSubject stays allowed when editing, even if it was switched off later. */
+    private function validatedNote(int $currentSubject = 0): array
+    {
+        $data = $this->validate([
+            "title" => "required|min:5|max:160",
+            "subject_id" => "required|int",
+            "category_id" => "required|int",
+            "description" => "required|min:10|max:2000",
+            "pages" => "between:1,5000",
+        ], ["subject_id" => "Subject", "category_id" => "Category"]);
+
+        $errors = [];
+        $subjectId = (int) $data["subject_id"];
+        if ($subjectId !== $currentSubject && !Subject::isActive($subjectId, Auth::facultyScope())) {
+            $errors["subject_id"] = "Choose a valid subject.";
+        }
+        if (!Category::exists((int) $data["category_id"])) {
+            $errors["category_id"] = "Choose a valid category.";
+        }
+        if ($errors) {
+            $this->failValidation($errors, $data);
+        }
+        $data["pages"] = ($data["pages"] ?? "") !== "" ? (int) $data["pages"] : null;
+        return $data;
     }
 
     public function show(int $id): void

@@ -86,6 +86,19 @@ function asset(string $path): string
     return base_url() . '/assets/' . ltrim($path, '/');
 }
 
+/** Address of a person's photo, or null when they have none. ?v= changes with the photo, so browsers can cache it. */
+function avatar_url($userId, ?string $stored): ?string
+{
+    return $stored === null ? null : url('/profile/' . (int) $userId . '/photo?v=' . substr($stored, 0, 8));
+}
+
+/** One-time value that lets this page's own inline script run under the Content-Security-Policy. */
+function csp_nonce(): string
+{
+    static $nonce = null;
+    return $nonce ??= base64_encode(random_bytes(16));
+}
+
 /** Current path without the base folder, e.g. /resources/12 */
 function current_path(): string
 {

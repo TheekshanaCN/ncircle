@@ -1,15 +1,26 @@
 <?php
 /**
  * views/partials/head.php  -  shared <head> content for every layout
+ * $metaDescription is optional. Link previews never include the query string, so no token can leak.
  * Load order matters: bootstrap -> icons -> theme -> layout -> components -> page
  */
+$metaTitle = $title ?? "Ncircle";
+$metaDescription = $metaDescription ?? "Ncircle is the study community for NSBM students: share notes, ask questions and join study groups.";
 ?>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
-<title><?= e($title ?? "Ncircle") ?></title>
+<title><?= e($metaTitle) ?></title>
+<meta name="description" content="<?= e($metaDescription) ?>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ncircle">
+<meta property="og:title" content="<?= e($metaTitle) ?>">
+<meta property="og:description" content="<?= e($metaDescription) ?>">
+<meta property="og:url" content="<?= e(absolute_url(current_path())) ?>">
+<meta property="og:image" content="<?= e(absolute_url("/assets/img/favicons/android-chrome-512x512.png")) ?>">
+<meta name="twitter:card" content="summary">
 <meta name="color-scheme" content="light dark">
-<script>
+<script nonce="<?= e(csp_nonce()) ?>">
     /* Before first paint, so there is no flash: saved choice first, otherwise the device setting. */
     (function (r) {
         var theme = "light";

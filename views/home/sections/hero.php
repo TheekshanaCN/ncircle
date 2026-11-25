@@ -47,7 +47,7 @@
 
         <div class="landing-hero__visual">
             <img class="landing-hero__art" src="<?= e(
-                asset("img/landing-page-headr.png"),
+                asset("img/landing-page-headr.webp"),
             ) ?>" width="553" height="553" alt="Four NSBM students standing together with their books">
         </div>
 

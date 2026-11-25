@@ -39,15 +39,15 @@ class Group
         return ['rows' => self::attachPreview($rows, $userId), 'total' => $total, 'pages' => (int) ceil($total / $perPage)];
     }
 
-    /** Adds is_member and up to three member names for the avatar stack. */
+    /** Adds is_member and up to three members for the avatar stack. */
     public static function attachPreview(array $groups, int $userId): array
     {
         foreach ($groups as &$g) {
             $g['is_member'] = self::isMember((int) $g['id'], $userId);
-            $g['preview'] = array_column(Database::all(
-                'SELECT u.name FROM group_members m JOIN users u ON u.id = m.user_id WHERE m.group_id = ? ORDER BY m.joined_at LIMIT 3',
+            $g['preview'] = Database::all(
+                'SELECT u.id, u.name, u.avatar FROM group_members m JOIN users u ON u.id = m.user_id WHERE m.group_id = ? ORDER BY m.joined_at LIMIT 3',
                 [$g['id']]
-            ), 'name');
+            );
         }
         return $groups;
     }
@@ -73,6 +73,23 @@ class Group
         });
     }
 
+    /** Locks the row like join() does. Returns false when the new limit is below the current members. */
+    public static function update(int $id, array $d): bool
+    {
+        return Database::transaction(function () use ($id, $d) {
+            Database::value('SELECT id FROM study_groups WHERE id = ? FOR UPDATE', [$id]);
+            $count = (int) Database::value('SELECT COUNT(*) FROM group_members WHERE group_id = ?', [$id]);
+            if ((int) $d['max_members'] < $count) {
+                return false;
+            }
+            Database::run(
+                'UPDATE study_groups SET name = ?, description = ?, max_members = ? WHERE id = ?',
+                [$d['name'], $d['description'], (int) $d['max_members'], $id]
+            );
+            return true;
+        });
+    }
+
     public static function delete(int $id): void
     {
         $postIds = array_map('intval', array_column(Database::all('SELECT id FROM group_posts WHERE group_id = ?', [$id]), 'id'));
@@ -88,7 +105,7 @@ class Group
     public static function members(int $groupId): array
     {
         return Database::all(
-            'SELECT u.id, u.name, u.username, u.faculty, m.joined_at FROM group_members m JOIN users u ON u.id = m.user_id
+            'SELECT u.id, u.name, u.username, u.avatar, u.faculty, m.joined_at FROM group_members m JOIN users u ON u.id = m.user_id
              WHERE m.group_id = ? ORDER BY m.joined_at',
             [$groupId]
         );
@@ -116,7 +133,7 @@ class Group
     public static function posts(int $groupId): array
     {
         return Database::all(
-            'SELECT p.*, u.name AS author FROM group_posts p JOIN users u ON u.id = p.user_id
+            'SELECT p.*, u.name AS author, u.avatar FROM group_posts p JOIN users u ON u.id = p.user_id
              WHERE p.group_id = ? AND p.is_hidden = 0 ORDER BY p.created_at DESC LIMIT 50',
             [$groupId]
         );

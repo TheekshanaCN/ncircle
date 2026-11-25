@@ -7,7 +7,7 @@ $member = $member ?? [];
 ?>
 <article class="sc-member">
     <div class="sc-member__top">
-        <?= component("avatar", ["name" => $member["name"], "size" => "lg"]) ?>
+        <?= component("avatar", ["name" => $member["name"], "photo" => avatar_url($member["id"], $member["avatar"] ?? null), "size" => "lg"]) ?>
         <div class="sc-member__who">
             <h3><a class="stretched-link" href="<?= e(url("/profile/" . (int) $member["id"])) ?>"><?= e($member["name"]) ?></a></h3>
             <p><?= e(config("app.faculties")[$member["faculty"]] ?? $member["faculty"]) ?> &middot; Year <?= (int) $member["academic_year"] ?></p>

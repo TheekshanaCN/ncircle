@@ -36,7 +36,43 @@ class GroupController extends Controller
             "title" => "Create a group | Ncircle",
             "pageCss" => "groups",
             "subjects" => Subject::options(Auth::facultyScope()),
+            "group" => null,
         ], "app");
+    }
+
+    public function edit(int $id): void
+    {
+        $this->view("groups/create", [
+            "title" => "Edit group | Ncircle",
+            "pageCss" => "groups",
+            "subjects" => [],
+            "group" => $this->loadOwn($id),
+        ], "app");
+    }
+
+    /** The subject stays fixed, because the group's meetings belong to it too. */
+    public function update(int $id): void
+    {
+        $this->loadOwn($id);
+        $data = $this->validate([
+            "name" => "required|min:3|max:100",
+            "description" => "required|min:10|max:500",
+            "max_members" => "required|between:2,100",
+        ], ["max_members" => "Member limit"]);
+        if (!Group::update($id, $data)) {
+            $this->failValidation(["max_members" => "The group already has more members than that."], $data);
+        }
+        Flash::add("success", "Group updated.");
+        Response::redirect("/groups/" . $id);
+    }
+
+    private function loadOwn(int $id): array
+    {
+        $group = $this->loadVisible($id);
+        if ((int) $group["owner_id"] !== Auth::id()) {
+            Response::error(403);
+        }
+        return $group;
     }
 
     public function store(): void

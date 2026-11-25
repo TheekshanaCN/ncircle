@@ -71,6 +71,11 @@ class User
         );
     }
 
+    public static function setAvatar(int $id, ?string $stored): void
+    {
+        Database::run('UPDATE users SET avatar = ? WHERE id = ?', [$stored, $id]);
+    }
+
     public static function setFaculty(int $id, string $faculty): void
     {
         Database::run('UPDATE users SET faculty = ? WHERE id = ?', [$faculty, $id]);
@@ -97,7 +102,7 @@ class User
         $total = (int) Database::value("SELECT COUNT(*) FROM users WHERE {$sql}", $params);
         $offset = ($page - 1) * $perPage;
         $rows = Database::all(
-            "SELECT id, name, username, faculty, academic_year, bio, skills, open_to_help FROM users
+            "SELECT id, name, username, avatar, faculty, academic_year, bio, skills, open_to_help FROM users
              WHERE {$sql} ORDER BY open_to_help DESC, last_seen_at DESC LIMIT {$perPage} OFFSET {$offset}",
             $params
         );

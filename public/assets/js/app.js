@@ -723,3 +723,38 @@ document.addEventListener('click', (event) => {
   dialog.addEventListener('click', (e) => { if (e.target !== image) dialog.close(); });
   dialog.addEventListener('close', () => dialog.remove());
 });
+
+/* Profile photo: crop to a small square before upload. This also drops hidden data such as GPS location. */
+(function () {
+  const input = document.querySelector('[data-photo-input]');
+  if (!input || !window.createImageBitmap || !window.DataTransfer) return;
+  const SIZE = 512;
+  const submit = input.form.querySelector('[type="submit"]');
+  let turn = 0;
+  input.addEventListener('change', async () => {
+    const file = input.files[0];
+    if (!file) return;
+    const mine = ++turn;
+    submit.disabled = true;
+    try {
+      const bitmap = await createImageBitmap(file);
+      const side = Math.min(bitmap.width, bitmap.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, SIZE, SIZE);
+      ctx.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, SIZE, SIZE);
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.88));
+      if (blob && mine === turn) {
+        const list = new DataTransfer();
+        list.items.add(new File([blob], 'photo.jpg', { type: 'image/jpeg' }));
+        input.files = list.files;
+      }
+    } catch (e) {
+      /* Not a readable image: the server explains the problem. */
+    }
+    if (mine === turn) submit.disabled = false;
+  });
+})();

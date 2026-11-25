@@ -42,7 +42,7 @@ $id = (int) $session["id"];
 
     <div class="sc-pod__foot">
         <div class="sc-person-stack" aria-hidden="true">
-            <?php foreach ($session["preview"] as $name): ?><?= component("avatar", ["name" => $name, "size" => "sm"]) ?><?php endforeach; ?>
+            <?php foreach ($session["preview"] as $person): ?><?= component("avatar", ["name" => $person["name"], "photo" => avatar_url($person["id"], $person["avatar"]), "size" => "sm"]) ?><?php endforeach; ?>
             <?php if ($extra > 0): ?><span class="sc-person sc-person--grey sc-person--sm">+<?= $extra ?></span><?php endif; ?>
         </div>
         <span class="sc-pod__seats"><?= $attendees ?>/<?= $capacity ?> going</span>

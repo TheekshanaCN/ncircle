@@ -15,9 +15,10 @@ $qid = (int) $question["id"];
     <p class="sc-post__text thread-body"><?= nl2br(e($question["body"])) ?></p>
     <?= component("attachment-list", ["attachments" => $attachments]) ?>
     <div class="thread-foot">
-        <?= component("avatar", ["name" => $question["author"], "size" => "sm"]) ?>
+        <?= component("avatar", ["name" => $question["author"], "photo" => avatar_url($question["user_id"], $question["author_avatar"]), "size" => "sm"]) ?>
         <a href="<?= e(url("/profile/" . (int) $question["user_id"])) ?>"><?= e($question["author"]) ?></a>
         <div class="thread-foot__actions">
+            <?php if ($isOwner): ?><a class="sc-text-btn" href="<?= e(url("/forum/" . $qid . "/edit")) ?>"><i class="bi bi-pencil" aria-hidden="true"></i> Edit</a><?php endif; ?>
             <?php if ($isOwner || $isAdmin): ?>
                 <button class="sc-text-btn sc-text-btn--danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteQuestion"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
             <?php else: ?>
@@ -50,6 +51,7 @@ $qid = (int) $question["id"];
                             <button class="sc-text-btn" type="submit"><i class="bi bi-check-circle" aria-hidden="true"></i> Accept answer</button>
                         </form>
                     <?php endif; ?>
+                    <?php if ($mine): ?><a class="sc-text-btn" href="<?= e(url("/answers/" . (int) $answer["id"] . "/edit")) ?>"><i class="bi bi-pencil" aria-hidden="true"></i> Edit</a><?php endif; ?>
                     <?php if ($mine || $isAdmin): ?>
                         <form method="post" action="<?= e(url("/answers/" . (int) $answer["id"] . "/delete")) ?>" data-confirm="Delete this answer?">
                             <?= csrf_field() ?>

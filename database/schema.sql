@@ -16,6 +16,7 @@ CREATE TABLE users (
     faculty VARCHAR(30) NOT NULL,
     academic_year TINYINT UNSIGNED NOT NULL DEFAULT 1,
     bio VARCHAR(500) NULL,
+    avatar VARCHAR(80) NULL,
     skills VARCHAR(255) NULL,
     open_to_help TINYINT(1) NOT NULL DEFAULT 1,
     listed_in_directory TINYINT(1) NOT NULL DEFAULT 1,

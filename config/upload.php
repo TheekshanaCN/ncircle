@@ -4,6 +4,11 @@ return [
     'max_size' => 10 * 1024 * 1024,
     'dir'      => BASE_PATH . '/storage/uploads/resources',
     'seed_dir' => BASE_PATH . '/database/seed-files',
+    'avatars' => [
+        'dir'      => BASE_PATH . '/storage/uploads/avatars',
+        'max_size' => 2 * 1024 * 1024,
+        'types'    => ['jpg', 'jpeg', 'png', 'webp'],
+    ],
     // Images and files on forum posts and group walls. Only these types are ever accepted.
     'attachments' => [
         'dir'        => BASE_PATH . '/storage/uploads/attachments',

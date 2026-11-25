@@ -2,10 +2,14 @@
 /** app/Models/Question.php  -  forum threads */
 class Question
 {
-    private const SELECT = 'SELECT q.*, u.name AS author, u.username AS author_username, s.code AS subject, s.name AS subject_name, s.faculty AS subject_faculty,
+    private const SELECT = 'SELECT q.*, u.name AS author, u.username AS author_username, u.avatar AS author_avatar, s.code AS subject, s.name AS subject_name, s.faculty AS subject_faculty,
             (SELECT COUNT(*) FROM answers a WHERE a.question_id = q.id AND a.is_hidden = 0) AS replies,
             (SELECT au.name FROM answers a JOIN users au ON au.id = a.user_id
-              WHERE a.question_id = q.id AND a.is_hidden = 0 ORDER BY a.is_accepted DESC, a.created_at ASC LIMIT 1) AS lead_answerer,
+              WHERE a.question_id = q.id AND a.is_hidden = 0 ORDER BY a.is_accepted DESC, a.created_at ASC, a.id LIMIT 1) AS lead_answerer,
+            (SELECT au.id FROM answers a JOIN users au ON au.id = a.user_id
+              WHERE a.question_id = q.id AND a.is_hidden = 0 ORDER BY a.is_accepted DESC, a.created_at ASC, a.id LIMIT 1) AS lead_id,
+            (SELECT au.avatar FROM answers a JOIN users au ON au.id = a.user_id
+              WHERE a.question_id = q.id AND a.is_hidden = 0 ORDER BY a.is_accepted DESC, a.created_at ASC, a.id LIMIT 1) AS lead_avatar,
             (SELECT COUNT(*) FROM answer_votes v JOIN answers a ON a.id = v.answer_id WHERE a.question_id = q.id) AS upvotes
          FROM questions q JOIN users u ON u.id = q.user_id JOIN subjects s ON s.id = q.subject_id';
 
@@ -58,6 +62,11 @@ class Question
     public static function create(int $userId, int $subjectId, string $title, string $body): int
     {
         return Database::insert('INSERT INTO questions (user_id, subject_id, title, body) VALUES (?, ?, ?, ?)', [$userId, $subjectId, $title, $body]);
+    }
+
+    public static function update(int $id, int $subjectId, string $title, string $body): void
+    {
+        Database::run('UPDATE questions SET subject_id = ?, title = ?, body = ? WHERE id = ?', [$subjectId, $title, $body, $id]);
     }
 
     public static function addView(int $id): void

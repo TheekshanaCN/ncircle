@@ -5,7 +5,7 @@ class Comment
     public static function forResource(int $resourceId): array
     {
         return Database::all(
-            'SELECT c.*, u.name AS author, u.username FROM comments c JOIN users u ON u.id = c.user_id
+            'SELECT c.*, u.name AS author, u.username, u.avatar FROM comments c JOIN users u ON u.id = c.user_id
              WHERE c.resource_id = ? AND c.is_hidden = 0 ORDER BY c.created_at ASC',
             [$resourceId]
         );

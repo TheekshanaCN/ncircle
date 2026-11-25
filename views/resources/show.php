@@ -45,6 +45,7 @@ $approved = $resource["status"] === "approved";
                         <?= component("button", ["label" => $resource["is_bookmarked"] ? "Saved" : "Save", "icon" => $resource["is_bookmarked"] ? "bookmark-fill" : "bookmark", "variant" => "outline", "type" => "submit", "class" => "sc-btn-quiet"]) ?>
                     </form>
                 <?php endif; ?>
+                <?php if ($isOwner): ?><?= component("button", ["label" => "Edit", "icon" => "pencil", "variant" => "outline", "href" => url("/resources/" . $id . "/edit"), "class" => "sc-btn-quiet"]) ?><?php endif; ?>
                 <?php if ($isOwner || $isAdmin): ?>
                     <?= component("button", ["label" => "Delete", "icon" => "trash", "variant" => "outline", "class" => "sc-btn-quiet sc-btn-danger-text", "attrs" => ["data-bs-toggle" => "modal", "data-bs-target" => "#deleteNote"]]) ?>
                 <?php elseif ($approved): ?>
@@ -58,7 +59,7 @@ $approved = $resource["status"] === "approved";
             <h2 class="sc-panel__title" id="comments-title"><i class="bi bi-chat-square" aria-hidden="true"></i> Comments (<?= count($comments) ?>)</h2>
             <?php foreach ($comments as $comment): ?>
                 <div class="sc-post">
-                    <?= component("avatar", ["name" => $comment["author"], "size" => "sm"]) ?>
+                    <?= component("avatar", ["name" => $comment["author"], "photo" => avatar_url($comment["user_id"], $comment["avatar"]), "size" => "sm"]) ?>
                     <div class="sc-post__body">
                         <p class="sc-post__meta"><a href="<?= e(url("/profile/" . (int) $comment["user_id"])) ?>"><strong><?= e($comment["author"]) ?></strong></a> <span><?= e(time_ago($comment["created_at"])) ?></span>
                             <?php if ((int) $comment["user_id"] !== Auth::id()): ?><button class="sc-text-btn" type="button" data-bs-toggle="modal" data-bs-target="#flagModal" data-flag-type="comment" data-flag-id="<?= (int) $comment["id"] ?>" aria-label="Report this comment"><i class="bi bi-flag" aria-hidden="true"></i></button><?php endif; ?>

@@ -71,16 +71,16 @@ class StudySession
         return self::attachPreview(Database::all(self::SELECT . " WHERE ss.group_id = ? AND {$when}", [$groupId]), $userId);
     }
 
-    /** Adds my_status (going, cant or null) and up to two names for the avatar stack. */
+    /** Adds my_status (going, cant or null) and up to two people for the avatar stack. */
     private static function attachPreview(array $sessions, int $userId): array
     {
         foreach ($sessions as &$s) {
             $s['my_status'] = self::statusFor((int) $s['id'], $userId);
-            $s['preview'] = array_column(Database::all(
-                "SELECT u.name FROM session_attendees a JOIN users u ON u.id = a.user_id
+            $s['preview'] = Database::all(
+                "SELECT u.id, u.name, u.avatar FROM session_attendees a JOIN users u ON u.id = a.user_id
                  WHERE a.session_id = ? AND a.status = 'going' ORDER BY a.joined_at LIMIT 2",
                 [$s['id']]
-            ), 'name');
+            );
         }
         return $sessions;
     }

@@ -16,7 +16,7 @@ $lead = $question["lead_answerer"] ?? null;
     </div>
     <h3 class="sc-thread__title"><a href="<?= e(url("/forum/" . (int) $question["id"])) ?>"><?= e($question["title"]) ?></a></h3>
     <div class="sc-thread__foot">
-        <?= component("avatar", ["name" => $lead ?: $question["author"], "size" => "sm"]) ?>
+        <?= component("avatar", ["name" => $lead ?: $question["author"], "photo" => $lead ? avatar_url($question["lead_id"] ?? 0, $question["lead_avatar"] ?? null) : avatar_url($question["user_id"] ?? 0, $question["author_avatar"] ?? null), "size" => "sm"]) ?>
         <span class="sc-thread__meta">
             <?php if ($lead): ?>
                 <?= e(strtok($lead, " ")) ?> answered &bull; <?= (int) $question["upvotes"] ?> peer upvotes
