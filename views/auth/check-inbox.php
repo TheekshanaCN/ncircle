@@ -37,7 +37,7 @@ ob_start();
 <?php
 $form = ob_get_clean();
 echo component("auth-shell", [
-    "image" => "img/sign-up.png",
+    "image" => "img/sign-up.webp",
     "imageSize" => [729, 729],
     "imageAlt" => "A student taking notes during an online lecture",
     "headline" => 'Almost in the <span class="sc-script">Ncircle.</span>',
