@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg sc-nav" aria-label="Main navigation">
             <a class="sc-nav__brand" href="<?= url("/") ?>">
-                <img src="<?= asset("img/logo.png") ?>" alt="Ncircle">
+                <img src="<?= asset("img/logo.svg") ?>" alt="Ncircle">
             </a>
 
             <button class="navbar-toggler" type="button"
@@ -28,17 +28,26 @@
                 </ul>
 
                 <div class="sc-nav__actions">
-                    <?= component("button", [
-                        "label" => "Sign in",
-                        "size" => "sm",
-                        "variant" => "outline",
-                        "href" => url("/login"),
-                    ]) ?>
-                    <?= component("button", [
-                        "label" => "Join the Ncircle",
-                        "size" => "sm",
-                        "href" => url("/register"),
-                    ]) ?>
+                    <?= component("theme-toggle") ?>
+                    <?php if (Auth::check()): ?>
+                        <?= component("button", [
+                            "label" => "Go to dashboard",
+                            "size" => "sm",
+                            "href" => url("/dashboard"),
+                        ]) ?>
+                    <?php else: ?>
+                        <?= component("button", [
+                            "label" => "Sign in",
+                            "size" => "sm",
+                            "variant" => "outline",
+                            "href" => url("/login"),
+                        ]) ?>
+                        <?= component("button", [
+                            "label" => "Join the Ncircle",
+                            "size" => "sm",
+                            "href" => url("/register"),
+                        ]) ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>

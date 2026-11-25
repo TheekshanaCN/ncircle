@@ -1,0 +1,16 @@
+# Apache: send every request that is not a real file to the front controller.
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+# PHP pages set their own security headers. This covers CSS, JS and images too.
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
+# Allows the 10 MB note uploads when PHP runs as an Apache module.
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 22M
+</IfModule>

@@ -1,0 +1,67 @@
+/* ============================================================
+   pages/admin.css  -  admin pages. Shares tables and split layout.
+   ============================================================ */
+@import url("groups.css");
+@import url("dashboard.css");
+
+.admin-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--sc-fs-sm);
+}
+.admin-list a {
+    font-weight: 600;
+    color: var(--sc-ink);
+    text-decoration: none;
+}
+.admin-list a:hover {
+    text-decoration: underline;
+}
+.admin-list span {
+    display: block;
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-muted);
+}
+.approval {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.875rem;
+    margin: 0;
+}
+.approval__main .sc-post__text {
+    margin-top: 0.375rem;
+    color: var(--sc-text-muted);
+}
+.approval__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+.approval__reject {
+    grid-column: 1 / -1;
+}
+.approval__quote {
+    margin: 0.5rem 0 0;
+    padding: 0.5rem 0.875rem;
+    border-left: 3px solid var(--sc-lime);
+    background: var(--sc-offwhite);
+    font-size: var(--sc-fs-sm);
+    overflow-wrap: anywhere;
+}
+.approval__quote a {
+    color: var(--sc-ink);
+}
+@media (max-width: 767.98px) {
+    .approval {
+        grid-template-columns: auto minmax(0, 1fr);
+    }
+    .approval__actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}

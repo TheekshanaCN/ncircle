@@ -19,15 +19,20 @@
  * toggle       password only: eye button (needs the data-toggle-password handler in app.js)
  * rows         textarea height (default 4)    id  defaults to field-<name>
  * attrs        extra attributes on the input, e.g. ['maxlength' => 120, 'autocomplete' => 'email']
+ * labelAside   small text at the right of the label (escaped), e.g. password strength
+ * after        trusted HTML printed under the input, e.g. the password meter
+ * value/error  default to the previous submission's old() and field_error() values
  */
 $name        = $name ?? '';
 $label       = $label ?? '';
 $type        = $type ?? 'text';
-$value       = $value ?? '';
+$value       = $value ?? old($name, '');
 $options     = $options ?? [];
 $placeholder = $placeholder ?? '';
 $help        = $help ?? '';
-$error       = $error ?? '';
+$error       = $error ?? field_error($name);
+$after       = $after ?? '';
+$labelAside  = $labelAside ?? '';
 $icon        = $icon ?? '';
 $toggle      = !empty($toggle) && $type === 'password';
 $rows        = $rows ?? 4;
@@ -37,7 +42,7 @@ $id          = $id ?? 'field-' . $name;
 
 $hasError  = $error !== '';
 $describe  = $hasError ? $id . '-error' : ($help !== '' ? $id . '-help' : null);
-$withIcon  = $icon !== '' && !in_array($type, ['textarea', 'select', 'file', 'checkbox'], true);
+$withIcon  = $icon !== '' && !in_array($type, ['textarea', 'file', 'checkbox'], true);
 $common    = array_merge([
     'id'               => $id,
     'name'             => $name,
@@ -54,7 +59,7 @@ $wrapClass = 'sc-field' . ($withIcon ? ' sc-field--icon' : '') . ($toggle ? ' sc
         <label class="form-check-label" for="<?= e($id) ?>"><?= e($label) ?></label>
     </div>
 <?php else: ?>
-    <label class="form-label" for="<?= e($id) ?>"><?= e($label) ?><?php if ($required): ?> <span class="sc-field__req" aria-hidden="true">*</span><?php endif; ?></label>
+    <label class="form-label" for="<?= e($id) ?>"><?= e($label) ?><?php if ($required): ?> <span class="sc-field__req" aria-hidden="true">*</span><?php endif; ?><?php if ($labelAside !== ''): ?><span class="sc-field__aside" data-field-aside><?= e($labelAside) ?></span><?php endif; ?></label>
     <div class="sc-field__control">
         <?php if ($withIcon): ?><i class="bi bi-<?= e($icon) ?> sc-field__icon" aria-hidden="true"></i><?php endif; ?>
 
@@ -81,6 +86,7 @@ $wrapClass = 'sc-field' . ($withIcon ? ' sc-field--icon' : '') . ($toggle ? ' sc
             <button type="button" class="sc-field__toggle" data-toggle-password="#<?= e($id) ?>" aria-label="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
         <?php endif; ?>
     </div>
+    <?= $after ?>
 <?php endif; ?>
 
     <?php if ($hasError): ?>

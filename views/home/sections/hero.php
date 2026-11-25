@@ -3,7 +3,7 @@
  * views/home/sections/hero.php  -  landing page section 1: hero ( Theekshana )
  */
 ?>
-<section class="landing-hero" id="top" aria-labelledby="hero-title">
+<section class="landing-hero" id="top" aria-labelledby="hero-title" data-spotlight data-parallax>
     <div class="landing-hero__inner">
 
         <div class="landing-hero__copy">
@@ -36,20 +36,19 @@
 
             <div class="landing-hero__trust">
                 <div class="sc-avatars" aria-hidden="true">
-                    <span class="sc-avatar">NL</span>
-                    <span class="sc-avatar sc-avatar--lime">KS</span>
-                    <span class="sc-avatar sc-avatar--lime-light">TW</span>
-                    <span class="sc-avatar sc-avatar--white">RL</span>
-                    <span class="sc-avatar sc-avatar--lime sc-avatar--count">+1.2k</span>
+                    <span class="sc-avatar"><i class="bi bi-person-fill"></i></span>
+                    <span class="sc-avatar sc-avatar--lime"><i class="bi bi-person-fill"></i></span>
+                    <span class="sc-avatar sc-avatar--lime-light"><i class="bi bi-person-fill"></i></span>
+                    <span class="sc-avatar sc-avatar--white"><i class="bi bi-person-fill"></i></span>
                 </div>
-                <p><strong>1,200+ NSBM undergraduates</strong> across 3 faculties collaborating this semester</p>
+                <p><strong><span data-live-value="students" data-count="<?= (int) $live["values"]["students"] ?>"><?= number_format($live["values"]["students"]) ?></span> NSBM undergraduates</strong> across <span data-live-value="faculties"><?= (int) $live["values"]["faculties"] ?></span> <span data-live-text="facultyWord"><?= e($live["texts"]["facultyWord"]) ?></span> collaborating on Ncircle</p>
             </div>
         </div>
 
         <div class="landing-hero__visual">
             <img class="landing-hero__art" src="<?= e(
-                asset("img/landing-page-headr.png"),
-            ) ?>" width="553" height="553" alt="Landing Page header Imagee">
+                asset("img/landing-page-headr.webp"),
+            ) ?>" width="553" height="553" alt="Four NSBM students standing together with their books">
         </div>
 
     </div>

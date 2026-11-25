@@ -5,6 +5,10 @@
 storage/uploads/resources/*
 storage/uploads/avatars/*
 storage/logs/*
+storage/uploads/attachments/*
+!storage/uploads/attachments/.gitkeep
+storage/cache/*
+!storage/cache/.gitkeep
 !storage/uploads/resources/.gitkeep
 !storage/uploads/avatars/.gitkeep
 !storage/logs/.gitkeep

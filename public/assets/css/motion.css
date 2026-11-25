@@ -1,0 +1,124 @@
+/* ============================================================
+   motion.css  -  animation and hover feel for the whole site.
+   Everything here is off for people who ask for reduced motion, and the
+   site works fully without it. Scroll reveals are set up in app.js (SC.reveal).
+   ============================================================ */
+@media print {
+    .sc-reveal { opacity: 1 !important; transform: none !important; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Smooth fade between pages, in browsers that support it. The menu and top bar stay still. */
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.18s; }
+    .sc-sidebar { view-transition-name: sc-sidebar; }
+    .sc-topbar-wrap { view-transition-name: sc-topbar; }
+    .sc-header { view-transition-name: sc-header; }
+
+    /* Theme switch fades instead of snapping */
+    html.sc-theme-fading, html.sc-theme-fading *, html.sc-theme-fading *::before, html.sc-theme-fading *::after {
+        transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease !important;
+    }
+
+    /* Scroll reveal */
+    .sc-reveal { opacity: 0; transform: translateY(16px); }
+    .sc-reveal.is-in { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--reveal-i, 0) * 60ms); }
+
+    /* Buttons: quick color fade on hover, a slight press on click. No lifting or spinning. */
+    .btn {
+        transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+    }
+    .btn:active:not(:disabled):not(.disabled) { transform: scale(0.98); transition-duration: 0.05s; }
+    .btn .bi { display: inline-block; transition: transform 0.2s ease; }
+    .btn:hover .bi-arrow-right, .btn:hover .bi-box-arrow-in-right { transform: translateX(2px); }
+    .btn:hover .bi-arrow-left { transform: translateX(-2px); }
+
+    /* Round icon buttons */
+    .sc-round-btn { transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease; }
+    .sc-round-btn:active { transform: scale(0.95); transition-duration: 0.05s; }
+    .sc-round-btn__dot { animation: sc-pulse 1.8s ease-out infinite; }
+
+    /* Cards lift a little */
+    .sc-note-card, .sc-pod, .sc-stat-tile, .sc-thread, .sc-note-row, .sc-card--outlined { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+    .sc-note-card:hover, .sc-pod:hover, .sc-stat-tile:hover, .sc-thread:hover, .sc-card--outlined:hover { transform: translateY(-3px); box-shadow: var(--sc-shadow-card); border-color: var(--sc-teal-border); }
+    .sc-note-row:hover { transform: translateX(3px); border-color: var(--sc-teal-border); }
+    .sc-note-row__download { transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease; }
+    .sc-note-row__download:active { transform: scale(0.95); }
+    .dash-mastery__pill { transition: transform 0.15s ease, border-color 0.15s ease; }
+    .dash-mastery__pill:hover { transform: translateY(-2px); border-color: var(--sc-heading); color: var(--sc-ink); }
+
+    /* Menus */
+    .sc-sidebar__link { transition: background-color 0.15s ease, color 0.15s ease; }
+    .sc-sidebar__link i { transition: transform 0.15s ease; }
+    .sc-sidebar__link:hover i { transform: scale(1.15); }
+    .sc-nav .nav-link { transition: background-color 0.15s ease; }
+    .browse-tabs__tab, .browse-pill span, .browse-chip, .sc-range__btn, .sc-legend__item { transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease; }
+    .sc-header .sc-nav { transition: box-shadow 0.2s ease; }
+    .sc-header.is-scrolled .sc-nav { box-shadow: 0 10px 24px rgba(29, 57, 52, 0.14); }
+
+    /* Messages */
+    .sc-alert { animation: sc-drop-in 0.3s ease; }
+    .sc-toast-wrap .alert { animation: sc-slide-in 0.25s ease; }
+
+    /* Form focus */
+    .form-control, .form-select { transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease; }
+
+    /* Charts */
+    .sc-bars.is-entering .sc-bars__stack { transition-delay: calc(var(--i, 0) * 45ms); }
+    .sc-progress > span { background-size: 200% 100%; animation: sc-stripes 14s linear infinite; }
+    .sc-pw-meter__fill { animation: sc-stripes 14s linear infinite; }
+    .sc-bubble { transition: transform 0.2s ease; }
+    .sc-bubble:hover { transform: scale(1.07); }
+
+    /* Landing hero: the lines rise in, and the art floats and follows the pointer */
+    .landing-hero__title, .landing-hero__lead, .landing-hero__actions, .landing-hero__trust { animation: sc-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .landing-hero__lead { animation-delay: 0.1s; }
+    .landing-hero__actions { animation-delay: 0.2s; }
+    .landing-hero__trust { animation-delay: 0.3s; }
+    .landing-hero__art { animation: sc-float 7s ease-in-out infinite; transform: translate(calc(var(--px, 0) * 12px), calc(var(--py, 0) * 12px)); transition: transform 0.25s ease-out; }
+
+    /* Dashboard banner */
+    .dash-hero__title, .dash-hero__sub, .dash-hero__actions, .dash-goal { animation: sc-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .dash-hero__sub { animation-delay: 0.08s; }
+    .dash-hero__actions { animation-delay: 0.16s; }
+    .dash-goal { animation-delay: 0.24s; }
+    .dash-hero__card img { animation: sc-float 7s ease-in-out infinite; }
+    .dash-hero::before, .landing-cta__glow { animation: sc-drift 12s ease-in-out infinite alternate; }
+
+    /* A soft light that follows the pointer on dark panels (see SC.spotlight) */
+    [data-spotlight] { position: relative; }
+    [data-spotlight]::after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, 50%), rgba(201, 244, 106, 0.14), transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    [data-spotlight]:hover::after { opacity: 1; }
+    [data-spotlight] > :not(.sc-glow) { position: relative; z-index: 1; }
+
+    /* Small touches */
+    .sc-feature__art { transition: transform 0.25s ease; }
+    .sc-feature:hover .sc-feature__art { transform: translateY(-4px) scale(1.08); }
+    .sc-step__icon, .sc-icon-circle { transition: transform 0.25s ease; }
+    .sc-step:hover .sc-step__icon, .sc-card:hover > * > .sc-icon-circle { transform: scale(1.1) rotate(-4deg); }
+    .sc-step { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .sc-step:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(29, 57, 52, 0.12); }
+    .sc-table tbody tr { transition: background-color 0.15s ease; }
+    .sc-table tbody tr:hover { background: var(--sc-offwhite); }
+    .notif { transition: background-color 0.15s ease; }
+    a.sc-hash { transition: background-color 0.15s ease; }
+    .sc-person-stack > * { transition: transform 0.15s ease; }
+    .sc-person-stack:hover > * { transform: translateX(-1px); }
+}
+
+@keyframes sc-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes sc-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@keyframes sc-drift { from { translate: 0 0; } to { translate: 2.5rem 1.5rem; } }
+@keyframes sc-stripes { from { background-position: 0 0; } to { background-position: 200px 0; } }
+@keyframes sc-drop-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes sc-slide-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }

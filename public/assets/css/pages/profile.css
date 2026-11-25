@@ -1,0 +1,129 @@
+/* ============================================================
+   pages/profile.css  -  profile, settings, study space, notifications
+   ============================================================ */
+@import url("groups.css");
+@import url("dashboard.css");
+
+.space-top {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+}
+.space-goal__value {
+    margin: 0.75rem 0 0;
+    font-family: var(--sc-font-heading);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--sc-heading);
+}
+.space-goal__form {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+}
+.space-goal__form .sc-field {
+    flex: 1;
+    margin: 0;
+}
+.space-goal__form .btn {
+    min-height: 3rem;
+}
+.space-logs {
+    display: grid;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--sc-border);
+    list-style: none;
+    font-size: var(--sc-fs-xs);
+}
+.space-logs li {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--sc-text-muted);
+}
+.space-logs strong {
+    flex-shrink: 0;
+    width: 3.5rem;
+    color: var(--sc-ink);
+}
+.space-logs span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.space-logs time {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.space-section {
+    margin-bottom: 2rem;
+}
+@media (max-width: 991.98px) {
+    .space-top {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0;
+    }
+}
+
+.notif-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.notif {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--sc-border);
+}
+.notif:last-child {
+    border-bottom: 0;
+}
+.notif:hover {
+    background: var(--sc-offwhite);
+}
+.notif--unread {
+    background: var(--sc-lime-soft);
+}
+.notif__body {
+    flex: 1;
+    min-width: 0;
+}
+.notif__body a {
+    font-size: var(--sc-fs-sm);
+    font-weight: 600;
+    color: var(--sc-ink);
+    text-decoration: none;
+}
+.notif__body p {
+    margin: 0;
+    overflow: hidden;
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.notif time {
+    flex-shrink: 0;
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-muted);
+}
+
+/* ---------- Profile photo (settings) ---------- */
+.profile-photo {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+.profile-photo__main {
+    flex: 1;
+    min-width: 0;
+    max-width: 32rem;
+}
